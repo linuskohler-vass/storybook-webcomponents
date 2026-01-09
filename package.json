@@ -1,0 +1,38 @@
+{
+  "name": "storybook-webcomponents",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run storybook",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linuskohler-vass/storybook-webcomponents.git"
+  },
+  "keywords": [],
+  "author": "Linus Kohler",
+  "bugs": {
+    "url": "https://github.com/linuskohler-vass/storybook-webcomponents/issues"
+  },
+  "homepage": "https://github.com/linuskohler-vass/storybook-webcomponents#readme",
+  "devDependencies": {
+    "@chromatic-com/storybook": "^4.1.3",
+    "@storybook/addon-a11y": "^10.1.11",
+    "@storybook/addon-docs": "^10.1.11",
+    "@storybook/addon-vitest": "^10.1.11",
+    "@storybook/web-components-vite": "^10.1.11",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vitest/browser-playwright": "^4.0.16",
+    "@vitest/coverage-v8": "^4.0.16",
+    "lit": "^3.3.2",
+    "playwright": "^1.57.0",
+    "postcss": "^8.5.6",
+    "storybook": "^10.1.11",
+    "tailwindcss": "^4.1.18",
+    "vitest": "^4.0.16"
+  }
+}

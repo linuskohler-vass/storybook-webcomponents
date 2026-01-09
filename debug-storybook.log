@@ -1,0 +1,42 @@
+[12:35:12.934] [INFO] storybook v10.1.11
+[12:35:12.988] [ERROR] [38;2;241;97;97mSB_CORE-SERVER_0007 (MainFileEvaluationError): Storybook couldn't evaluate your [33m.storybook/main.js[39m file.
+
+Original error:
+[37m/.storybook/main.js:17
+export default config;
+^^^^^^
+
+SyntaxError: Unexpected token 'export'
+    at wrapSafe (node:internal/modules/cjs/loader:1692:18)
+    at Module._compile (node:internal/modules/cjs/loader:1735:20)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at loadCJSModuleWithModuleLoad (node:internal/modules/esm/translators:339:3)
+    at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:242:7)
+    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)[39m[39m
+    at loadMainConfig (file://./node_modules/storybook/dist/_node-chunks/chunk-Q4DOC7HF.js:11701:11)
+    at async buildDevStandalone (file://./node_modules/storybook/dist/core-server/index.js:7149:16)
+    at async withTelemetry (file://./node_modules/storybook/dist/_node-chunks/chunk-2372JZ52.js:209:12)
+    at async dev (file://./node_modules/storybook/dist/bin/core.js:2734:3)
+    at async _Command.<anonymous> (file://./node_modules/storybook/dist/bin/core.js:2801:92)
+[12:35:12.989] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
+[12:35:12.990] [WARN]   Failed to load preset: "/Users/linus.kohler/Repositories/storybook-webcomponents/.storybook/main.js"
+[12:35:12.990] [ERROR] ./.storybook/main.js:17
+export default config;
+^^^^^^
+
+[38;2;241;97;97mSyntaxError: Unexpected token 'export'[39m
+    at wrapSafe (node:internal/modules/cjs/loader:1692:18)
+    at Module._compile (node:internal/modules/cjs/loader:1735:20)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at loadCJSModuleWithModuleLoad (node:internal/modules/esm/translators:339:3)
+    at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:242:7)
+    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
