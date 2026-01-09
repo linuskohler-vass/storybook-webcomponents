@@ -1,5 +1,5 @@
 import * as HeaderStories from './Header.stories';
-import { Page } from './Page';
+import { Page } from '@/components/Page';
 
 export default {
   title: 'Example/Page',

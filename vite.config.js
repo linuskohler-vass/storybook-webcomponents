@@ -7,13 +7,13 @@ import { readdirSync } from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Auto-discover component files (*.js, excluding *.stories.js)
-const storiesDir = resolve(__dirname, 'stories');
-const componentFiles = readdirSync(storiesDir)
-  .filter(file => file.endsWith('.js') && !file.endsWith('.stories.js'))
+// Auto-discover component files from src/components/
+const componentsDir = resolve(__dirname, 'src/components');
+const componentFiles = readdirSync(componentsDir)
+  .filter(file => file.endsWith('.js'))
   .reduce((entries, file) => {
     const name = file.replace('.js', '').toLowerCase();
-    entries[name] = resolve(storiesDir, file);
+    entries[name] = resolve(componentsDir, file);
     return entries;
   }, {});
 
