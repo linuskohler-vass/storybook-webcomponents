@@ -1,12 +1,12 @@
 import { fn } from 'storybook/test';
 
-import { Header } from '@/components/Header';
+import { LikoHeaderExport } from '@/components/LikoHeader';
 
 export default {
-  title: 'Example/Header',
+  title: 'Liko/LikoHeader',
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/web-components/vue/writing-docs/autodocs
   tags: ['autodocs'],
-  render: (args) => Header(args),
+  render: (args) => LikoHeaderExport(args),
   args: {
     onLogin: fn(),
     onLogout: fn(),

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liko Components - Integration Test</title>
+  <link rel="stylesheet" href="./dist/main.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Nunito Sans', sans-serif;
+    }
+    .test-section {
+      margin-bottom: 40px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+    }
+    .test-section h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .component-demo {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+    .component-demo h3 {
+      margin-top: 0;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>Liko Web Components - Integration Test</h1>
+  <p>This page demonstrates the Liko web components using the built distribution files.</p>
+
+  <!-- Button Component Tests -->
+  <div class="test-section">
+    <h2>LikoButton Component</h2>
+
+    <div class="component-demo">
+      <h3>Primary Button</h3>
+      <liko-button primary label="Primary Button" size="medium"></liko-button>
+    </div>
+
+    <div class="component-demo">
+      <h3>Secondary Button</h3>
+      <liko-button label="Secondary Button" size="medium"></liko-button>
+    </div>
+
+    <div class="component-demo">
+      <h3>Button Sizes</h3>
+      <liko-button label="Small" size="small"></liko-button>
+      <liko-button label="Medium" size="medium" style="margin: 0 10px;"></liko-button>
+      <liko-button label="Large" size="large"></liko-button>
+    </div>
+
+    <div class="component-demo">
+      <h3>Custom Background Color</h3>
+      <liko-button primary label="Custom Color" background-color="#ff6b6b"></liko-button>
+    </div>
+  </div>
+
+  <!-- Header Component Tests -->
+  <div class="test-section">
+    <h2>LikoHeader Component</h2>
+
+    <div class="component-demo">
+      <h3>Logged Out State</h3>
+      <liko-header id="header-logged-out"></liko-header>
+    </div>
+
+    <div class="component-demo">
+      <h3>Logged In State</h3>
+      <liko-header id="header-logged-in"></liko-header>
+    </div>
+  </div>
+
+  <!-- Page Component Tests -->
+  <div class="test-section">
+    <h2>LikoPage Component</h2>
+
+    <div class="component-demo">
+      <h3>Full Page Example (Logged Out)</h3>
+      <liko-page id="page-logged-out"></liko-page>
+    </div>
+  </div>
+
+  <!-- Load component scripts -->
+  <script type="module" src="./dist/likobutton.js"></script>
+  <script type="module" src="./dist/likoheader.js"></script>
+  <script type="module" src="./dist/likopage.js"></script>
+</body>
+</html>

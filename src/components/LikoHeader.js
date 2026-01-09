@@ -1,6 +1,6 @@
-import { Button } from './Button';
+import { LikoButtonExport } from './LikoButton';
 
-class StorybookHeader extends HTMLElement {
+class LikoHeader extends HTMLElement {
   get user() {
     return this._user;
   }
@@ -22,7 +22,7 @@ class StorybookHeader extends HTMLElement {
 
   render() {
     this.innerHTML = '';
-    
+
     const wrapper = document.createElement('div');
     wrapper.className = 'flex justify-between items-center border-b border-black/10 px-5 py-[15px] font-nunito-sans';
 
@@ -47,33 +47,33 @@ class StorybookHeader extends HTMLElement {
 
     const buttonsDiv = document.createElement('div');
     buttonsDiv.className = 'space-x-[10px]'; // Using space-x utility for margin between buttons
-    
+
     if (this._user) {
       const welcomeSpan = document.createElement('span');
       welcomeSpan.className = 'mr-[10px] text-[#333] text-sm';
       welcomeSpan.innerText = `Welcome, ${this._user.name}!`;
       buttonsDiv.appendChild(welcomeSpan);
 
-      const btn = Button({ 
-        size: 'small', 
-        label: 'Log out', 
-        onClick: () => this.dispatchEvent(new CustomEvent('logout', { bubbles: true })) 
+      const btn = LikoButtonExport({
+        size: 'small',
+        label: 'Log out',
+        onClick: () => this.dispatchEvent(new CustomEvent('logout', { bubbles: true }))
       });
       buttonsDiv.appendChild(btn);
     } else {
-      const loginBtn = Button({
+      const loginBtn = LikoButtonExport({
         size: 'small',
         label: 'Log in',
         onClick: () => this.dispatchEvent(new CustomEvent('login', { bubbles: true }))
       });
-      
-      const signupBtn = Button({
+
+      const signupBtn = LikoButtonExport({
         primary: true,
         size: 'small',
         label: 'Sign up',
         onClick: () => this.dispatchEvent(new CustomEvent('createAccount', { bubbles: true }))
       });
-      
+
       buttonsDiv.appendChild(loginBtn);
       buttonsDiv.appendChild(signupBtn);
     }
@@ -84,14 +84,14 @@ class StorybookHeader extends HTMLElement {
   }
 }
 
-if (!customElements.get('storybook-header')) {
-  customElements.define('storybook-header', StorybookHeader);
+if (!customElements.get('liko-header')) {
+  customElements.define('liko-header', LikoHeader);
 }
 
-export const Header = ({ user, onLogin, onLogout, onCreateAccount }) => {
-  const header = document.createElement('storybook-header');
+export const LikoHeaderExport = ({ user, onLogin, onLogout, onCreateAccount }) => {
+  const header = document.createElement('liko-header');
   header.user = user;
-  
+
   if (onLogin) header.addEventListener('login', onLogin);
   if (onLogout) header.addEventListener('logout', onLogout);
   if (onCreateAccount) header.addEventListener('createAccount', onCreateAccount);

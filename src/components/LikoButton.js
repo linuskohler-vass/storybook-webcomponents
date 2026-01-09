@@ -1,4 +1,4 @@
-class StorybookButton extends HTMLElement {
+class LikoButton extends HTMLElement {
   static get observedAttributes() {
     return ['primary', 'size', 'label', 'background-color'];
   }
@@ -52,12 +52,12 @@ class StorybookButton extends HTMLElement {
   }
 }
 
-if (!customElements.get('storybook-button')) {
-  customElements.define('storybook-button', StorybookButton);
+if (!customElements.get('liko-button')) {
+  customElements.define('liko-button', LikoButton);
 }
 
-export const Button = ({ primary, backgroundColor = null, size, label, onClick }) => {
-  const btn = document.createElement('storybook-button');
+export const LikoButtonExport = ({ primary, backgroundColor = null, size, label, onClick }) => {
+  const btn = document.createElement('liko-button');
   if (primary) btn.setAttribute('primary', '');
   if (backgroundColor) btn.setAttribute('background-color', backgroundColor);
   if (size) btn.setAttribute('size', size);

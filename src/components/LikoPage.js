@@ -1,6 +1,6 @@
-import './Header';
+import './LikoHeader';
 
-class StorybookPage extends HTMLElement {
+class LikoPage extends HTMLElement {
   get user() {
     return this._user;
   }
@@ -15,7 +15,7 @@ class StorybookPage extends HTMLElement {
   }
 
   update() {
-    const header = this.querySelector('storybook-header');
+    const header = this.querySelector('liko-header');
     if (header) {
       header.user = this._user;
     } else {
@@ -27,7 +27,7 @@ class StorybookPage extends HTMLElement {
     this.innerHTML = '';
     const article = document.createElement('article');
 
-    const header = document.createElement('storybook-header');
+    const header = document.createElement('liko-header');
     header.user = this._user;
     article.appendChild(header);
 
@@ -86,12 +86,12 @@ class StorybookPage extends HTMLElement {
   }
 }
 
-if (!customElements.get('storybook-page')) {
-  customElements.define('storybook-page', StorybookPage);
+if (!customElements.get('liko-page')) {
+  customElements.define('liko-page', LikoPage);
 }
 
-export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => {
-  const page = document.createElement('storybook-page');
+export const LikoPageExport = ({ user, onLogin, onLogout, onCreateAccount }) => {
+  const page = document.createElement('liko-page');
   page.user = user;
 
   if (onLogin) page.addEventListener('login', onLogin);
