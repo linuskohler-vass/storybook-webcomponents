@@ -1,33 +1,34 @@
-import { LikoButtonExport } from './LikoButton';
+import { tw } from "../utils/tw.js";
+import { LikoButtonExport } from "./LikoButton";
 
 class LikoHeader extends HTMLElement {
-  get user() {
-    return this._user;
-  }
-
-  set user(value) {
-    this._user = value;
-    this.update();
-  }
-
-  connectedCallback() {
-    this.render();
-  }
-
-  update() {
-    if (this.isConnected) {
-      this.render();
+    get user() {
+        return this._user;
     }
-  }
 
-  render() {
-    this.innerHTML = '';
+    set user(value) {
+        this._user = value;
+        this.update();
+    }
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'flex justify-between items-center border-b border-black/10 px-5 py-[15px] font-nunito-sans';
+    connectedCallback() {
+        this.render();
+    }
 
-    const logoDiv = document.createElement('div');
-    logoDiv.innerHTML = `<svg class="inline-block align-top" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    update() {
+        if (this.isConnected) {
+            this.render();
+        }
+    }
+
+    render() {
+        this.innerHTML = "";
+
+        const wrapper = document.createElement("div");
+        wrapper.className = tw`flex items-center justify-between border-b border-black/10 px-5 py-[15px] font-nunito-sans`;
+
+        const logoDiv = document.createElement("div");
+        logoDiv.innerHTML = `<svg class="${tw`inline-block align-top`}" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
     <g fill="none" fillRule="evenodd">
       <path
         d="M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z"
@@ -43,58 +44,58 @@ class LikoHeader extends HTMLElement {
       />
     </g>
   </svg>
-  <h1 class="inline-block align-top my-[6px] ml-[10px] font-bold text-[20px] leading-none">Acme</h1>`;
+  <h1 class="${tw`my-[6px] ml-[10px] inline-block align-top text-[20px] leading-none font-bold`}">Acme</h1>`;
 
-    const buttonsDiv = document.createElement('div');
-    buttonsDiv.className = 'space-x-[10px]'; // Using space-x utility for margin between buttons
+        const buttonsDiv = document.createElement("div");
+        buttonsDiv.className = tw`space-x-[10px]`;
 
-    if (this._user) {
-      const welcomeSpan = document.createElement('span');
-      welcomeSpan.className = 'mr-[10px] text-[#333] text-sm';
-      welcomeSpan.innerText = `Welcome, ${this._user.name}!`;
-      buttonsDiv.appendChild(welcomeSpan);
+        if (this._user) {
+            const welcomeSpan = document.createElement("span");
+            welcomeSpan.className = tw`mr-[10px] text-sm text-[#333]`;
+            welcomeSpan.innerText = `Welcome, ${this._user.name}!`;
+            buttonsDiv.appendChild(welcomeSpan);
 
-      const btn = LikoButtonExport({
-        size: 'small',
-        label: 'Log out',
-        onClick: () => this.dispatchEvent(new CustomEvent('logout', { bubbles: true }))
-      });
-      buttonsDiv.appendChild(btn);
-    } else {
-      const loginBtn = LikoButtonExport({
-        size: 'small',
-        label: 'Log in',
-        onClick: () => this.dispatchEvent(new CustomEvent('login', { bubbles: true }))
-      });
+            const btn = LikoButtonExport({
+                size: "small",
+                label: "Log out",
+                onClick: () => this.dispatchEvent(new CustomEvent("logout", { bubbles: true })),
+            });
+            buttonsDiv.appendChild(btn);
+        } else {
+            const loginBtn = LikoButtonExport({
+                size: "small",
+                label: "Log in",
+                onClick: () => this.dispatchEvent(new CustomEvent("login", { bubbles: true })),
+            });
 
-      const signupBtn = LikoButtonExport({
-        primary: true,
-        size: 'small',
-        label: 'Sign up',
-        onClick: () => this.dispatchEvent(new CustomEvent('createAccount', { bubbles: true }))
-      });
+            const signupBtn = LikoButtonExport({
+                primary: true,
+                size: "small",
+                label: "Sign up",
+                onClick: () => this.dispatchEvent(new CustomEvent("createAccount", { bubbles: true })),
+            });
 
-      buttonsDiv.appendChild(loginBtn);
-      buttonsDiv.appendChild(signupBtn);
+            buttonsDiv.appendChild(loginBtn);
+            buttonsDiv.appendChild(signupBtn);
+        }
+
+        wrapper.appendChild(logoDiv);
+        wrapper.appendChild(buttonsDiv);
+        this.appendChild(wrapper);
     }
-
-    wrapper.appendChild(logoDiv);
-    wrapper.appendChild(buttonsDiv);
-    this.appendChild(wrapper);
-  }
 }
 
-if (!customElements.get('liko-header')) {
-  customElements.define('liko-header', LikoHeader);
+if (!customElements.get("liko-header")) {
+    customElements.define("liko-header", LikoHeader);
 }
 
 export const LikoHeaderExport = ({ user, onLogin, onLogout, onCreateAccount }) => {
-  const header = document.createElement('liko-header');
-  header.user = user;
+    const header = document.createElement("liko-header");
+    header.user = user;
 
-  if (onLogin) header.addEventListener('login', onLogin);
-  if (onLogout) header.addEventListener('logout', onLogout);
-  if (onCreateAccount) header.addEventListener('createAccount', onCreateAccount);
+    if (onLogin) header.addEventListener("login", onLogin);
+    if (onLogout) header.addEventListener("logout", onLogout);
+    if (onCreateAccount) header.addEventListener("createAccount", onCreateAccount);
 
-  return header;
+    return header;
 };
