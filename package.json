@@ -10,7 +10,8 @@
     "build-storybook": "storybook build",
     "build": "vite build",
     "format": "prettier --write './src/**/*.{css,js,jsx}'",
-    "lint": "npm run format"
+    "lint:js": "eslint './src/**/*.{js,jsx}'",
+    "lint": "npm run format && npm run lint:js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/linuskohler-vass/storybook-webcomponents#readme",
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.0",
+    "@eslint/js": "^10.0.1",
     "@storybook/addon-a11y": "^10.2.0",
     "@storybook/addon-docs": "^10.2.0",
     "@storybook/addon-vitest": "^10.2.0",
@@ -31,6 +33,9 @@
     "@tailwindcss/postcss": "^4.1.18",
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^10.0.0",
+    "eslint-plugin-storybook": "^10.2.8",
+    "globals": "^17.3.0",
     "lit": "^3.3.2",
     "playwright": "^1.57.0",
     "postcss": "^8.5.6",
