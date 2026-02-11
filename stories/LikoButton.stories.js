@@ -1,46 +1,46 @@
-import { fn } from 'storybook/test';
+import { fn } from "storybook/test";
 
-import { LikoButtonExport } from '@/components/LikoButton';
+import { LikoButtonExport } from "@/components/LikoButton";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 export default {
-  title: 'Liko/LikoButton',
-  tags: ['autodocs'],
-  render: (args) => LikoButtonExport(args),
-  argTypes: {
-    backgroundColor: { control: 'color' },
-    size: {
-      control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
+    title: "Liko/LikoButton",
+    tags: ["autodocs"],
+    render: (args) => LikoButtonExport(args),
+    argTypes: {
+        backgroundColor: { control: "color" },
+        size: {
+            control: { type: "select" },
+            options: ["small", "medium", "large"],
+        },
     },
-  },
-  args: { onClick: fn() },
+    args: { onClick: fn() },
 };
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary = {
-  args: {
-    primary: true,
-    label: 'Button',
-  },
+    args: {
+        primary: true,
+        label: "Button",
+    },
 };
 
 export const Secondary = {
-  args: {
-    label: 'Button',
-  },
+    args: {
+        label: "Button",
+    },
 };
 
 export const Large = {
-  args: {
-    size: 'large',
-    label: 'Button',
-  },
+    args: {
+        size: "large",
+        label: "Button",
+    },
 };
 
 export const Small = {
-  args: {
-    size: 'small',
-    label: 'Button',
-  },
+    args: {
+        size: "small",
+        label: "Button",
+    },
 };

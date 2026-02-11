@@ -7,8 +7,11 @@ export default defineConfig([
     {
         ignores: ["**/*.template.js", "!.storybook"],
     },
+    // ESLint recommended rules for all files
+    js.configs.recommended,
+    // Custom rules for src and stories files
     {
-        files: ["src/components/**/*.{js,mjs,cjs}", "src/helpers/**/*.{js,mjs,cjs}", "src/pages/**/*.{js,mjs,cjs}"],
+        files: ["src/**/*.{js,mjs,cjs}", "stories/**/*.{js,mjs,cjs}"],
         languageOptions: {
             ecmaVersion: 2022,
             sourceType: 'module',
@@ -16,12 +19,12 @@ export default defineConfig([
                 ...globals.browser,
             },
         },
-        plugins: { js, storybook: storybookPlugin },
         rules: {
-            ...js.configs.recommended.rules,
             "no-console": ["warn", { allow: ["warn", "error"] }],
             quotes: ["warn", "double"],
             semi: ["warn", "always"],
         },
     },
+    // Storybook-specific rules for story files
+    ...storybookPlugin.configs['flat/recommended'],
 ]);
