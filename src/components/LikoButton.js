@@ -21,24 +21,23 @@ class LikoButton extends HTMLElement {
         const size = this.getAttribute("size") || "medium";
         const label = this.getAttribute("label");
 
-        const baseClasses = "font-nunito-sans font-bold border-0 rounded-3xl cursor-pointer inline-block leading-none";
+        const baseClasses = tw`inline-block cursor-pointer rounded-3xl border-0 font-nunito-sans leading-none font-bold`;
 
         let sizeClasses = "";
         switch (size) {
             case "small":
-                sizeClasses = "text-xs px-4 py-2.5";
+                sizeClasses = tw`px-4 py-2.5 text-xs`;
                 break;
             case "large":
-                sizeClasses = "text-base px-6 py-3";
+                sizeClasses = tw`px-6 py-3 text-base`;
                 break;
             default: // medium
-                sizeClasses = "text-sm px-5 py-2.5";
-                sizeClasses = "text-sm px-5 py-[11px]";
+                sizeClasses = tw`px-5 py-[11px] text-sm`;
         }
 
         const modeClasses = primary
-            ? "text-white bg-[#555ab9]"
-            : "text-[#333] bg-transparent shadow-[rgba(0,0,0,0.15)_0px_0px_0px_1px_inset]";
+            ? tw`bg-[#555ab9] text-white`
+            : tw`bg-transparent text-[#333] shadow-[rgba(0,0,0,0.15)_0px_0px_0px_1px_inset]`;
 
         this.innerHTML = "";
 
