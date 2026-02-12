@@ -1,9 +1,19 @@
 import { tw } from "../../utils/tw.js";
 import { LikoButtonExport } from "../atoms/LikoButton";
+import { LikoTagExport } from "../atoms/LikoTag";
 
 class LikoCard extends HTMLElement {
     static get observedAttributes() {
         return ["heading", "text", "image-src", "image-alt", "button-label"];
+    }
+
+    get tags() {
+        return this._tags || [];
+    }
+
+    set tags(value) {
+        this._tags = value;
+        if (this.isConnected) this.render();
     }
 
     connectedCallback() {
@@ -34,6 +44,15 @@ class LikoCard extends HTMLElement {
             img.alt = imageAlt;
             img.className = tw`h-48 w-full object-cover`;
             card.appendChild(img);
+        }
+
+        if (this.tags.length > 0) {
+            const tagsWrapper = document.createElement("div");
+            tagsWrapper.className = tw`flex flex-wrap gap-2 px-5 pt-4`;
+            for (const tag of this.tags) {
+                tagsWrapper.appendChild(LikoTagExport({ label: tag.label, primary: tag.primary }));
+            }
+            card.appendChild(tagsWrapper);
         }
 
         const body = document.createElement("div");
@@ -74,13 +93,14 @@ if (!customElements.get("liko-card")) {
     customElements.define("liko-card", LikoCard);
 }
 
-export const LikoCardExport = ({ heading, text, imageSrc, imageAlt, buttonLabel, onButtonClick }) => {
+export const LikoCardExport = ({ heading, text, imageSrc, imageAlt, buttonLabel, tags, onButtonClick }) => {
     const card = document.createElement("liko-card");
     if (heading) card.setAttribute("heading", heading);
     if (text) card.setAttribute("text", text);
     if (imageSrc) card.setAttribute("image-src", imageSrc);
     if (imageAlt) card.setAttribute("image-alt", imageAlt);
     if (buttonLabel) card.setAttribute("button-label", buttonLabel);
+    if (tags) card.tags = tags;
     if (onButtonClick) card.addEventListener("button-click", onButtonClick);
     return card;
 };

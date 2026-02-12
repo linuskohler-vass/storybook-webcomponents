@@ -29,6 +29,7 @@ export const Default = {
                 imageSrc: "https://placehold.co/600x400/4a564b/ffffff?text=Mountains",
                 imageAlt: "Mountain landscape",
                 buttonLabel: "Book Now",
+                tags: [{ label: "Nature", primary: true }, { label: "Popular" }],
             },
             {
                 heading: "Ocean Breeze",
@@ -36,6 +37,7 @@ export const Default = {
                 imageSrc: "https://placehold.co/600x400/627663/ffffff?text=Ocean",
                 imageAlt: "Ocean view",
                 buttonLabel: "Explore",
+                tags: [{ label: "Beach" }, { label: "Relaxation", primary: true }],
             },
             {
                 heading: "Forest Walk",
@@ -43,6 +45,7 @@ export const Default = {
                 imageSrc: "https://placehold.co/600x400/7d937e/ffffff?text=Forest",
                 imageAlt: "Forest path",
                 buttonLabel: "Enjoy",
+                tags: [{ label: "Adventure" }],
             },
         ],
     },
