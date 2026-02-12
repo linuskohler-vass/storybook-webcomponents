@@ -50,7 +50,7 @@ class LikoCard extends HTMLElement {
             const tagsWrapper = document.createElement("div");
             tagsWrapper.className = tw`flex flex-wrap gap-2 px-5 pt-4`;
             for (const tag of this.tags) {
-                tagsWrapper.appendChild(LikoTagExport({ label: tag.label, primary: tag.primary }));
+                tagsWrapper.appendChild(LikoTagExport({ label: tag.label }));
             }
             card.appendChild(tagsWrapper);
         }

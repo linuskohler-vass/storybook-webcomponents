@@ -5,20 +5,29 @@ export default {
     tags: ["autodocs"],
     render: (args) => LikoTagExport(args),
     argTypes: {
-        primary: { control: "boolean" },
         label: { control: "text" },
+        toggleable: { control: "boolean" },
+        active: { control: "boolean" },
     },
 };
 
-export const Primary = {
+export const Default = {
     args: {
-        primary: true,
         label: "Tag",
     },
 };
 
-export const Secondary = {
+export const Toggleable = {
     args: {
-        label: "Tag",
+        label: "Clickable Tag",
+        toggleable: true,
+    },
+};
+
+export const ToggleableActive = {
+    args: {
+        label: "Active Tag",
+        toggleable: true,
+        active: true,
     },
 };

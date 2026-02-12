@@ -58,7 +58,7 @@ export const WithTags = {
         imageSrc: "https://placehold.co/600x400",
         imageAlt: "Placeholder image",
         tags: [
-            { label: "Nature", primary: true },
+            { label: "Nature" },
             { label: "Adventure" },
         ],
     },
@@ -72,7 +72,7 @@ export const WithTagsAndButton = {
         imageAlt: "Placeholder image",
         buttonLabel: "Learn More",
         tags: [
-            { label: "Featured", primary: true },
+            { label: "Featured" },
             { label: "New" },
             { label: "Popular" },
         ],

@@ -1,13 +1,17 @@
-import { LikoCardGridExport } from "@/components/organisms/LikoCardGrid";
+import { LikoCardFilterExport } from "@/components/organisms/LikoCardFilter";
 
 export default {
-    title: "Organisms/LikoCardGrid",
+    title: "Organisms/LikoCardFilter",
     tags: ["autodocs"],
-    render: (args) => LikoCardGridExport(args),
+    render: (args) => LikoCardFilterExport(args),
+    argTypes: {
+        filterLabel: { control: "text" },
+    },
 };
 
 export const Default = {
     args: {
+        filterLabel: "Filter by:",
         cards: [
             {
                 heading: "Mountain Retreat",
@@ -31,15 +35,8 @@ export const Default = {
                 imageSrc: "https://placehold.co/600x400/7d937e/ffffff?text=Forest",
                 imageAlt: "Forest path",
                 buttonLabel: "Enjoy",
-                tags: [{ label: "Adventure" }],
+                tags: [{ label: "Adventure" }, { label: "Nature" }],
             },
-        ],
-    },
-};
-
-export const TwoCards = {
-    args: {
-        cards: [
             {
                 heading: "City Lights",
                 text: "Experience the vibrant nightlife and cultural richness of the city.",
@@ -53,57 +50,13 @@ export const TwoCards = {
                 text: "Witness the vast golden dunes stretching endlessly under a clear sky.",
                 imageSrc: "https://placehold.co/600x400/7c7272/ffffff?text=Desert",
                 imageAlt: "Desert landscape",
-                tags: [{ label: "Exotic" }, { label: "Adventure" }],
-            },
-        ],
-    },
-};
-
-export const SixCards = {
-    args: {
-        cards: [
-            {
-                heading: "Mountain Retreat",
-                text: "Escape to the serene mountains.",
-                imageSrc: "https://placehold.co/600x400/4a564b/ffffff?text=Mountains",
-                imageAlt: "Mountains",
-                buttonLabel: "Book Now",
-                tags: [{ label: "Nature" }],
-            },
-            {
-                heading: "Ocean Breeze",
-                text: "Relax by the coast.",
-                imageSrc: "https://placehold.co/600x400/627663/ffffff?text=Ocean",
-                imageAlt: "Ocean",
-                buttonLabel: "Explore",
-                tags: [{ label: "Beach" }],
-            },
-            {
-                heading: "Forest Walk",
-                text: "Discover hidden trails.",
-                imageSrc: "https://placehold.co/600x400/7d937e/ffffff?text=Forest",
-                imageAlt: "Forest",
-                tags: [{ label: "Adventure" }, { label: "Nature" }],
-            },
-            {
-                heading: "City Lights",
-                text: "Experience the vibrant nightlife.",
-                imageSrc: "https://placehold.co/600x400/322f2f/ffffff?text=City",
-                imageAlt: "City",
-                buttonLabel: "Discover",
-                tags: [{ label: "Urban" }],
-            },
-            {
-                heading: "Desert Dunes",
-                text: "Witness the vast golden dunes.",
-                imageSrc: "https://placehold.co/600x400/7c7272/ffffff?text=Desert",
-                imageAlt: "Desert",
+                tags: [{ label: "Adventure" }, { label: "Exotic" }],
             },
             {
                 heading: "Lake Serenity",
-                text: "Find peace by the still waters.",
+                text: "Find peace by the still waters of a pristine mountain lake.",
                 imageSrc: "https://placehold.co/600x400/95b196/ffffff?text=Lake",
-                imageAlt: "Lake",
+                imageAlt: "Lake view",
                 buttonLabel: "Visit",
                 tags: [{ label: "Relaxation" }, { label: "Nature" }],
             },
