@@ -33,11 +33,11 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (chunkInfo) => {
-          return chunkInfo.name === 'styles' ? 'js/[name].js' : '[name].js';
+          return chunkInfo.name === 'styles' ? 'js/[name]-[hash].js' : '[name]-[hash].js';
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-            return 'main.css';
+            return 'main-[hash].css';
           }
           if (assetInfo.name && /\.(ttf|otf|eot|woff2?)$/.test(assetInfo.name)) {
             return 'fonts/[name][extname]';
