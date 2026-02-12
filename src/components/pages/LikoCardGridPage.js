@@ -45,7 +45,6 @@ class LikoCardGridPage extends HTMLElement {
         wrapper.appendChild(h2);
 
         const p = document.createElement("p");
-        p.className = tw`max-w-2xl`;
         p.textContent = description;
         wrapper.appendChild(p);
 

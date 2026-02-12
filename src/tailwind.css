@@ -41,7 +41,7 @@
     }
 
     h1 {
-        @apply mb-2 text-4xl font-bold;
+        @apply mb-4 text-4xl font-bold;
     }
 
     h2 {

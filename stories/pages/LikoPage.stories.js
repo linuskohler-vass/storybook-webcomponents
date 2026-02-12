@@ -1,4 +1,4 @@
-import * as LikoHeaderStories from "./LikoHeader.stories";
+import * as LikoHeaderStories from "../molecules/LikoHeader.stories";
 import { LikoPageExport } from "@/components/pages/LikoPage";
 
 export default {
