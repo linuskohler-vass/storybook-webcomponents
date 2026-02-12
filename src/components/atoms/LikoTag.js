@@ -24,13 +24,9 @@ class LikoTag extends HTMLElement {
 
         const modeClasses = active ? tw`bg-foreground-60 text-white` : tw`bg-background-80 text-text`;
 
-        const interactiveClasses = toggleable
-            ? tw`cursor-pointer select-none slide-hover`
-            : "";
+        const interactiveClasses = toggleable ? tw`slide-hover cursor-pointer select-none` : "";
 
-        const hoverBg = active
-            ? "var(--color-foreground-80)"
-            : "var(--color-background-60)";
+        const hoverBg = active ? "var(--color-foreground-80)" : "var(--color-background-60)";
 
         this.innerHTML = "";
 

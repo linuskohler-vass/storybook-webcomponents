@@ -35,13 +35,9 @@ class LikoButton extends HTMLElement {
                 sizeClasses = tw`px-5 py-[11px] text-sm`;
         }
 
-        const modeClasses = primary
-            ? tw`bg-foreground-80 text-white`
-            : tw`bg-background-80 text-text`;
+        const modeClasses = primary ? tw`bg-foreground-80 text-white` : tw`bg-background-80 text-text`;
 
-        const hoverBg = primary
-            ? "var(--color-foreground-100)"
-            : "var(--color-background-60)";
+        const hoverBg = primary ? "var(--color-foreground-100)" : "var(--color-background-60)";
 
         this.innerHTML = "";
 

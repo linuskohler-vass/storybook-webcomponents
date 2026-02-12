@@ -52,7 +52,7 @@ class LikoCardStack extends HTMLElement {
         if (this.cards.length === 0) return;
 
         const wrapper = document.createElement("div");
-        wrapper.className = tw`font-nunito-sans flex flex-col items-center gap-6`;
+        wrapper.className = tw`flex flex-col items-center gap-6`;
 
         // --- Stack area ---
         const stackContainer = document.createElement("div");
@@ -120,7 +120,7 @@ class LikoCardStack extends HTMLElement {
 
     _createNavButton(direction) {
         const btn = document.createElement("button");
-        btn.className = tw`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-border bg-background-100 p-0 text-foreground-80 shadow-sm slide-hover`;
+        btn.className = tw`slide-hover flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-border bg-background-100 p-0 text-foreground-80 shadow-sm`;
         btn.style.setProperty("--slide-hover-bg", "var(--color-background-60)");
         btn.setAttribute("aria-label", direction === "prev" ? "Previous card" : "Next card");
 
