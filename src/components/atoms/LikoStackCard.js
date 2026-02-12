@@ -26,7 +26,7 @@ class LikoStackCard extends HTMLElement {
         const card = document.createElement("div");
         card.className = tw`rounded-xl border border-border bg-background-100 p-2 shadow-lg`;
         const isTextOnly = text && !imageSrc;
-        const orientation = isTextOnly ? "landscape" : (this.getAttribute("orientation") || "portrait");
+        const orientation = isTextOnly ? "landscape" : this.getAttribute("orientation") || "portrait";
         card.style.aspectRatio = orientation === "landscape" ? "4 / 3" : "3 / 4";
 
         const inner = document.createElement("div");
@@ -38,7 +38,7 @@ class LikoStackCard extends HTMLElement {
             const textTitle = this.getAttribute("text-title");
             if (textTitle) {
                 const h = document.createElement("p");
-                h.className = tw`text-center font-nunito-sans text-xl font-bold leading-snug text-text`;
+                h.className = tw`text-center font-nunito-sans text-xl leading-snug font-bold text-text`;
                 h.textContent = textTitle;
                 inner.appendChild(h);
             }

@@ -96,11 +96,26 @@ export const Default = {
             },
         ],
         textCards: [
-            { textTitle: "AI Itineraries", text: "Personalised itineraries powered by AI — your perfect trip, planned in seconds." },
-            { textTitle: "Live Guides", text: "Live local guides connecting you with authentic experiences in real time." },
-            { textTitle: "Eco Scores", text: "Sustainable travel scores helping you make eco-conscious choices effortlessly." },
-            { textTitle: "AR Previews", text: "Augmented reality previews — explore destinations before you even pack your bags." },
-            { textTitle: "Community", text: "Community-driven recommendations from fellow travelers who share your passions." },
+            {
+                textTitle: "AI Itineraries",
+                text: "Personalised itineraries powered by AI — your perfect trip, planned in seconds.",
+            },
+            {
+                textTitle: "Live Guides",
+                text: "Live local guides connecting you with authentic experiences in real time.",
+            },
+            {
+                textTitle: "Eco Scores",
+                text: "Sustainable travel scores helping you make eco-conscious choices effortlessly.",
+            },
+            {
+                textTitle: "AR Previews",
+                text: "Augmented reality previews — explore destinations before you even pack your bags.",
+            },
+            {
+                textTitle: "Community",
+                text: "Community-driven recommendations from fellow travelers who share your passions.",
+            },
         ],
     },
 };

@@ -4,7 +4,15 @@ import "../organisms/LikoCardFilter";
 
 class LikoHomePage extends HTMLElement {
     static get observedAttributes() {
-        return ["title", "subtitle", "description", "filter-label", "filter-heading", "bottom-heading", "bottom-description"];
+        return [
+            "title",
+            "subtitle",
+            "description",
+            "filter-label",
+            "filter-heading",
+            "bottom-heading",
+            "bottom-description",
+        ];
     }
 
     get stackCards() {

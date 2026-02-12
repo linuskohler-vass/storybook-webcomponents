@@ -115,14 +115,7 @@ if (!customElements.get("liko-project-detail")) {
     customElements.define("liko-project-detail", LikoProjectDetail);
 }
 
-export const LikoProjectDetailExport = ({
-    title,
-    subtitle,
-    description,
-    buttons = [],
-    metaItems = [],
-    cards = [],
-}) => {
+export const LikoProjectDetailExport = ({ title, subtitle, description, buttons = [], metaItems = [], cards = [] }) => {
     const el = document.createElement("liko-project-detail");
     if (title) el.setAttribute("title", title);
     if (subtitle) el.setAttribute("subtitle", subtitle);
