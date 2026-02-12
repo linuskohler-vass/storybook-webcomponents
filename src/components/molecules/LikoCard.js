@@ -41,7 +41,6 @@ class LikoCard extends HTMLElement {
 
         if (heading) {
             const h3 = document.createElement("h3");
-            h3.className = tw`mb-2 text-lg font-bold text-foreground-100`;
             h3.textContent = heading;
             body.appendChild(h3);
         }

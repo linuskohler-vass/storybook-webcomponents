@@ -34,3 +34,29 @@
     --color-warning: #d4af37;
     --color-error: #b04f3f;
 }
+
+@layer base {
+    body {
+        @apply text-text;
+    }
+
+    h1 {
+        @apply mb-2 text-4xl font-bold;
+    }
+
+    h2 {
+        @apply mb-4 text-2xl font-semibold;
+    }
+
+    h3 {
+        @apply mb-2 text-lg font-semibold;
+    }
+
+    p {
+        @apply mb-4 text-base leading-relaxed;
+    }
+
+    a {
+        @apply text-link no-underline hover:text-link-hover;
+    }
+}

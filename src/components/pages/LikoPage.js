@@ -36,7 +36,7 @@ class LikoPage extends HTMLElement {
         section.className = tw`mx-auto max-w-[600px] px-5 py-12 font-nunito-sans text-sm leading-6 text-[#333]`;
 
         section.innerHTML = `
-    <h2 class="${tw`mb-1 inline-block align-top text-[32px] leading-none font-bold`}">Pages in Storybook</h2>
+    <h2>Pages in Storybook</h2>
     <p class="${tw`my-4`}">
       We recommend building UIs with a
       <a href="https://componentdriven.org" target="_blank" rel="noopener noreferrer" class="${tw`text-inherit no-underline`}">
