@@ -26,7 +26,7 @@ export const Default = {
             {
                 heading: "Mountain Retreat",
                 text: "Escape to the serene mountains and enjoy breathtaking views with fresh alpine air.",
-                imageSrc: "https://placehold.co/600x400/4a564b/ffffff?text=Mountains",
+                imageSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop",
                 imageAlt: "Mountain landscape",
                 buttonLabel: "Book Now",
                 tags: [{ label: "Nature" }, { label: "Popular" }],
@@ -34,7 +34,7 @@ export const Default = {
             {
                 heading: "Ocean Breeze",
                 text: "Relax by the coast with the soothing sound of waves and golden sunsets.",
-                imageSrc: "https://placehold.co/600x400/627663/ffffff?text=Ocean",
+                imageSrc: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop",
                 imageAlt: "Ocean view",
                 buttonLabel: "Explore",
                 tags: [{ label: "Beach" }, { label: "Relaxation" }],
@@ -42,7 +42,7 @@ export const Default = {
             {
                 heading: "Forest Walk",
                 text: "Discover hidden trails through ancient forests and reconnect with nature.",
-                imageSrc: "https://placehold.co/600x400/7d937e/ffffff?text=Forest",
+                imageSrc: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&h=400&fit=crop",
                 imageAlt: "Forest path",
                 buttonLabel: "Enjoy",
                 tags: [{ label: "Adventure" }],

@@ -17,27 +17,27 @@ export const Default = {
     args: {
         cards: [
             {
-                imageSrc: "https://placehold.co/400x530/4a564b/ffffff?text=Mountains",
+                imageSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=530&fit=crop",
                 imageAlt: "Mountain landscape",
                 caption: "Escape to the serene mountains",
             },
             {
-                imageSrc: "https://placehold.co/400x530/627663/ffffff?text=Ocean",
+                imageSrc: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=530&fit=crop",
                 imageAlt: "Ocean view",
                 caption: "Relax by the coast with golden sunsets",
             },
             {
-                imageSrc: "https://placehold.co/400x530/7d937e/ffffff?text=Forest",
+                imageSrc: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&h=530&fit=crop",
                 imageAlt: "Forest path",
                 caption: "Discover hidden trails through ancient forests",
             },
             {
-                imageSrc: "https://placehold.co/400x530/322f2f/ffffff?text=City",
+                imageSrc: "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=400&h=530&fit=crop",
                 imageAlt: "City skyline",
                 caption: "Experience the vibrant nightlife",
             },
             {
-                imageSrc: "https://placehold.co/400x530/7c7272/ffffff?text=Desert",
+                imageSrc: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400&h=530&fit=crop",
                 imageAlt: "Desert landscape",
             },
         ],
@@ -48,15 +48,15 @@ export const ImageOnly = {
     args: {
         cards: [
             {
-                imageSrc: "https://placehold.co/400x530/4a564b/ffffff?text=1",
+                imageSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=530&fit=crop",
                 imageAlt: "Card one",
             },
             {
-                imageSrc: "https://placehold.co/400x530/627663/ffffff?text=2",
+                imageSrc: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=530&fit=crop",
                 imageAlt: "Card two",
             },
             {
-                imageSrc: "https://placehold.co/400x530/7d937e/ffffff?text=3",
+                imageSrc: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&h=530&fit=crop",
                 imageAlt: "Card three",
             },
         ],
@@ -68,22 +68,22 @@ export const Landscape = {
         orientation: "landscape",
         cards: [
             {
-                imageSrc: "https://placehold.co/700x530/4a564b/ffffff?text=Mountains",
+                imageSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&h=530&fit=crop",
                 imageAlt: "Mountain landscape",
                 caption: "Escape to the serene mountains",
             },
             {
-                imageSrc: "https://placehold.co/700x530/627663/ffffff?text=Ocean",
+                imageSrc: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&h=530&fit=crop",
                 imageAlt: "Ocean view",
                 caption: "Relax by the coast with golden sunsets",
             },
             {
-                imageSrc: "https://placehold.co/700x530/7d937e/ffffff?text=Forest",
+                imageSrc: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=700&h=530&fit=crop",
                 imageAlt: "Forest path",
                 caption: "Discover hidden trails through ancient forests",
             },
             {
-                imageSrc: "https://placehold.co/700x530/322f2f/ffffff?text=City",
+                imageSrc: "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=700&h=530&fit=crop",
                 imageAlt: "City skyline",
             },
         ],
@@ -118,12 +118,12 @@ export const TwoCards = {
     args: {
         cards: [
             {
-                imageSrc: "https://placehold.co/400x530/95b196/ffffff?text=Front",
+                imageSrc: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=530&fit=crop",
                 imageAlt: "Front card",
                 caption: "This is the front card",
             },
             {
-                imageSrc: "https://placehold.co/400x530/322f2f/ffffff?text=Back",
+                imageSrc: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400&h=530&fit=crop",
                 imageAlt: "Back card",
                 caption: "This is the back card",
             },

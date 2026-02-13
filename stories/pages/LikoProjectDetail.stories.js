@@ -36,22 +36,22 @@ export const Default = {
         ],
         cards: [
             {
-                imageSrc: "https://placehold.co/700x530/4a564b/ffffff?text=Lobby",
+                imageSrc: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&h=530&fit=crop",
                 imageAlt: "Resort lobby",
                 caption: "The grand lobby with panoramic mountain views",
             },
             {
-                imageSrc: "https://placehold.co/700x530/627663/ffffff?text=Suite",
+                imageSrc: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=700&h=530&fit=crop",
                 imageAlt: "Luxury suite",
                 caption: "Spacious suites with floor-to-ceiling windows",
             },
             {
-                imageSrc: "https://placehold.co/700x530/7d937e/ffffff?text=Spa",
+                imageSrc: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=700&h=530&fit=crop",
                 imageAlt: "Spa area",
                 caption: "A world-class spa and wellness center",
             },
             {
-                imageSrc: "https://placehold.co/700x530/322f2f/ffffff?text=Restaurant",
+                imageSrc: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700&h=530&fit=crop",
                 imageAlt: "Restaurant",
                 caption: "Fine dining with locally sourced ingredients",
             },
@@ -73,17 +73,17 @@ export const WithoutButton = {
         ],
         cards: [
             {
-                imageSrc: "https://placehold.co/700x530/322f2f/ffffff?text=Street+1",
+                imageSrc: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=700&h=530&fit=crop",
                 imageAlt: "Street scene",
                 caption: "Morning rush in the old town",
             },
             {
-                imageSrc: "https://placehold.co/700x530/7c7272/ffffff?text=Street+2",
+                imageSrc: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=700&h=530&fit=crop",
                 imageAlt: "Architecture",
                 caption: "Reflections on glass facades",
             },
             {
-                imageSrc: "https://placehold.co/700x530/655757/ffffff?text=Street+3",
+                imageSrc: "https://images.unsplash.com/photo-1444723121867-7a241cacace9?w=700&h=530&fit=crop",
                 imageAlt: "Night scene",
             },
         ],

@@ -16,7 +16,7 @@ export const Default = {
             {
                 heading: "Mountain Retreat",
                 text: "Escape to the serene mountains and enjoy breathtaking views with fresh alpine air.",
-                imageSrc: "https://placehold.co/600x400/4a564b/ffffff?text=Mountains",
+                imageSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop",
                 imageAlt: "Mountain landscape",
                 buttonLabel: "Book Now",
                 tags: [{ label: "Nature" }, { label: "Popular" }],
@@ -24,7 +24,7 @@ export const Default = {
             {
                 heading: "Ocean Breeze",
                 text: "Relax by the coast with the soothing sound of waves and golden sunsets.",
-                imageSrc: "https://placehold.co/600x400/627663/ffffff?text=Ocean",
+                imageSrc: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop",
                 imageAlt: "Ocean view",
                 buttonLabel: "Explore",
                 tags: [{ label: "Beach" }, { label: "Relaxation" }],
@@ -32,7 +32,7 @@ export const Default = {
             {
                 heading: "Forest Walk",
                 text: "Discover hidden trails through ancient forests and reconnect with nature.",
-                imageSrc: "https://placehold.co/600x400/7d937e/ffffff?text=Forest",
+                imageSrc: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&h=400&fit=crop",
                 imageAlt: "Forest path",
                 buttonLabel: "Enjoy",
                 tags: [{ label: "Adventure" }, { label: "Nature" }],
@@ -40,7 +40,7 @@ export const Default = {
             {
                 heading: "City Lights",
                 text: "Experience the vibrant nightlife and cultural richness of the city.",
-                imageSrc: "https://placehold.co/600x400/322f2f/ffffff?text=City",
+                imageSrc: "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=600&h=400&fit=crop",
                 imageAlt: "City skyline",
                 buttonLabel: "Discover",
                 tags: [{ label: "Urban" }],
@@ -48,14 +48,14 @@ export const Default = {
             {
                 heading: "Desert Dunes",
                 text: "Witness the vast golden dunes stretching endlessly under a clear sky.",
-                imageSrc: "https://placehold.co/600x400/7c7272/ffffff?text=Desert",
+                imageSrc: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&h=400&fit=crop",
                 imageAlt: "Desert landscape",
                 tags: [{ label: "Adventure" }, { label: "Exotic" }],
             },
             {
                 heading: "Lake Serenity",
                 text: "Find peace by the still waters of a pristine mountain lake.",
-                imageSrc: "https://placehold.co/600x400/95b196/ffffff?text=Lake",
+                imageSrc: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&h=400&fit=crop",
                 imageAlt: "Lake view",
                 buttonLabel: "Visit",
                 tags: [{ label: "Relaxation" }, { label: "Nature" }],

@@ -16,14 +16,14 @@ export default {
 
 export const ImageOnly = {
     args: {
-        imageSrc: "https://placehold.co/400x530/4a564b/ffffff?text=Mountain",
+        imageSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=530&fit=crop",
         imageAlt: "Mountain landscape",
     },
 };
 
 export const WithCaption = {
     args: {
-        imageSrc: "https://placehold.co/400x530/627663/ffffff?text=Ocean",
+        imageSrc: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=530&fit=crop",
         imageAlt: "Ocean view",
         caption: "A beautiful sunset over the calm ocean waves",
     },
@@ -31,7 +31,7 @@ export const WithCaption = {
 
 export const Landscape = {
     args: {
-        imageSrc: "https://placehold.co/700x530/7d937e/ffffff?text=Panorama",
+        imageSrc: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=700&h=530&fit=crop",
         imageAlt: "Panoramic view",
         caption: "A wide panoramic landscape view",
         orientation: "landscape",
