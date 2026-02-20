@@ -40,10 +40,10 @@ export default defineConfig({
             return 'main-[hash].css';
           }
           if (assetInfo.name && /\.(ttf|otf|eot|woff2?)$/.test(assetInfo.name)) {
-            return 'fonts/[name][extname]';
+            return 'assets/fonts/[name][extname]';
           }
           if (assetInfo.name && /\.(svg|png|jpe?g)$/.test(assetInfo.name)) {
-            return 'images/[name][extname]';
+            return 'assets/images/[name][extname]';
           }
           return 'assets/[name][extname]';
         },

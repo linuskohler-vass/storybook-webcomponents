@@ -1,0 +1,36 @@
+@theme {
+    /* custom fonts */
+    --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: "Ubuntu", ui-sans-serif, Georgia, sans-serif;
+
+    /* background colors */
+    --color-background-100: white;
+    --color-background-80: #f0efeb;
+    --color-background-60: #e5e4de;
+
+    /* foreground colors */
+    --color-foreground-100: #151414;
+    --color-foreground-80: #322f2f;
+    --color-foreground-60: #655757;
+    --color-foreground-40: #7c7272;
+    --color-foreground-20: #9a9393;
+
+    /* accent colors */
+    --color-accent-100: #4a564b;
+    --color-accent-80: #627663;
+    --color-accent-60: #7d937e;
+    --color-accent-40: #95b196;
+
+    /* derived colors */
+    --color-light: var(--color-background-80);
+    --color-dark: var(--color-foreground-80);
+    --color-border: var(--color-background-60);
+    --color-text: var(--color-foreground-100);
+    --color-link: var(--color-foreground-80);
+    --color-link-hover: var(--color-foreground-100);
+
+    /* signal colors */
+    --color-success: var(--color-accent-100);
+    --color-warning: #d4af37;
+    --color-error: #b04f3f;
+}

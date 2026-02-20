@@ -59,7 +59,7 @@ class LikoFlipCard extends HTMLElement {
 
         // --- Back face ---
         const back = document.createElement("div");
-        back.className = tw`absolute inset-0 flex flex-col items-center justify-between rounded-lg border border-border bg-background-80 px-4 py-4 shadow-sm md:px-5 md:py-6`;
+        back.className = tw`absolute inset-0 flex flex-col items-center justify-between rounded-lg border border-border bg-background-80 px-4 py-4 shadow-sm md:py-5`;
         back.style.backfaceVisibility = "hidden";
         back.style.transform = "rotateY(180deg)";
 

@@ -1,0 +1,21 @@
+@utility slide-hover {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: var(--slide-hover-bg);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        pointer-events: none;
+    }
+
+    &:hover:not(:disabled)::before {
+        transform: translateX(0);
+    }
+}
