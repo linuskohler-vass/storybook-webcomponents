@@ -44,3 +44,19 @@ export const Small = {
         label: "Button",
     },
 };
+
+export const AsLink = {
+    args: {
+        primary: true,
+        label: "Go to Example",
+        href: "https://example.com",
+    },
+};
+
+export const AsLinkNewTab = {
+    args: {
+        label: "Open in New Tab",
+        href: "https://example.com",
+        target: "_blank",
+    },
+};

@@ -2,7 +2,7 @@ import { tw } from "../../utils/tw.js";
 
 class LikoButton extends HTMLElement {
     static get observedAttributes() {
-        return ["primary", "size", "label", "background-color"];
+        return ["primary", "size", "label", "background-color", "href", "target"];
     }
 
     connectedCallback() {
@@ -20,8 +20,10 @@ class LikoButton extends HTMLElement {
         const backgroundColor = this.getAttribute("background-color");
         const size = this.getAttribute("size") || "medium";
         const label = this.getAttribute("label");
+        const href = this.getAttribute("href");
+        const target = this.getAttribute("target");
 
-        const baseClasses = tw`inline-block cursor-pointer rounded-3xl border-0 leading-none font-bold`;
+        const baseClasses = tw`inline-block cursor-pointer rounded-3xl border-0 leading-none font-bold no-underline`;
 
         let sizeClasses = "";
         switch (size) {
@@ -41,17 +43,29 @@ class LikoButton extends HTMLElement {
 
         this.innerHTML = "";
 
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = tw`${baseClasses} ${sizeClasses} ${modeClasses} slide-hover`;
-        btn.style.setProperty("--slide-hover-bg", hoverBg);
-        if (backgroundColor) {
-            btn.style.backgroundColor = backgroundColor;
+        const element = href ? document.createElement("a") : document.createElement("button");
+
+        if (href) {
+            element.href = href;
+            if (target) {
+                element.target = target;
+                if (target === "_blank") {
+                    element.rel = "noopener noreferrer";
+                }
+            }
+        } else {
+            element.type = "button";
         }
 
-        btn.textContent = label;
+        element.className = tw`${baseClasses} ${sizeClasses} ${modeClasses} slide-hover`;
+        element.style.setProperty("--slide-hover-bg", hoverBg);
+        if (backgroundColor) {
+            element.style.backgroundColor = backgroundColor;
+        }
 
-        this.appendChild(btn);
+        element.textContent = label;
+
+        this.appendChild(element);
     }
 }
 
@@ -59,12 +73,14 @@ if (!customElements.get("liko-button")) {
     customElements.define("liko-button", LikoButton);
 }
 
-export const LikoButtonExport = ({ primary, backgroundColor = null, size, label, onClick }) => {
+export const LikoButtonExport = ({ primary, backgroundColor = null, size, label, onClick, href, target }) => {
     const btn = document.createElement("liko-button");
     if (primary) btn.setAttribute("primary", "");
     if (backgroundColor) btn.setAttribute("background-color", backgroundColor);
     if (size) btn.setAttribute("size", size);
     if (label) btn.setAttribute("label", label);
+    if (href) btn.setAttribute("href", href);
+    if (target) btn.setAttribute("target", target);
     if (onClick) {
         btn.addEventListener("click", onClick);
     }

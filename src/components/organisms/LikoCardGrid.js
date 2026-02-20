@@ -28,6 +28,8 @@ class LikoCardGrid extends HTMLElement {
             if (card.imageSrc) el.setAttribute("image-src", card.imageSrc);
             if (card.imageAlt) el.setAttribute("image-alt", card.imageAlt);
             if (card.buttonLabel) el.setAttribute("button-label", card.buttonLabel);
+            if (card.buttonUrl) el.setAttribute("button-url", card.buttonUrl);
+            if (card.buttonTarget) el.setAttribute("button-target", card.buttonTarget);
             if (card.tags) el.tags = card.tags;
             grid.appendChild(el);
         }

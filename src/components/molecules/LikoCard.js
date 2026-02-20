@@ -4,7 +4,7 @@ import { LikoTagExport } from "../atoms/LikoTag";
 
 class LikoCard extends HTMLElement {
     static get observedAttributes() {
-        return ["heading", "text", "image-src", "image-alt", "button-label"];
+        return ["heading", "text", "image-src", "image-alt", "button-label", "button-url", "button-target"];
     }
 
     get tags() {
@@ -32,6 +32,8 @@ class LikoCard extends HTMLElement {
         const imageSrc = this.getAttribute("image-src");
         const imageAlt = this.getAttribute("image-alt") || "";
         const buttonLabel = this.getAttribute("button-label");
+        const buttonUrl = this.getAttribute("button-url");
+        const buttonTarget = this.getAttribute("button-target");
 
         this.innerHTML = "";
 
@@ -78,7 +80,9 @@ class LikoCard extends HTMLElement {
                 label: buttonLabel,
                 size: "medium",
                 primary: true,
-                onClick: () => this.dispatchEvent(new CustomEvent("button-click", { bubbles: true })),
+                href: buttonUrl,
+                target: buttonTarget,
+                onClick: buttonUrl ? undefined : () => this.dispatchEvent(new CustomEvent("button-click", { bubbles: true })),
             });
             buttonWrapper.appendChild(btn);
             body.appendChild(buttonWrapper);
@@ -93,13 +97,15 @@ if (!customElements.get("liko-card")) {
     customElements.define("liko-card", LikoCard);
 }
 
-export const LikoCardExport = ({ heading, text, imageSrc, imageAlt, buttonLabel, tags, onButtonClick }) => {
+export const LikoCardExport = ({ heading, text, imageSrc, imageAlt, buttonLabel, buttonUrl, buttonTarget, tags, onButtonClick }) => {
     const card = document.createElement("liko-card");
     if (heading) card.setAttribute("heading", heading);
     if (text) card.setAttribute("text", text);
     if (imageSrc) card.setAttribute("image-src", imageSrc);
     if (imageAlt) card.setAttribute("image-alt", imageAlt);
     if (buttonLabel) card.setAttribute("button-label", buttonLabel);
+    if (buttonUrl) card.setAttribute("button-url", buttonUrl);
+    if (buttonTarget) card.setAttribute("button-target", buttonTarget);
     if (tags) card.tags = tags;
     if (onButtonClick) card.addEventListener("button-click", onButtonClick);
     return card;

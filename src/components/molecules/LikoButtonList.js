@@ -30,6 +30,8 @@ class LikoButtonList extends HTMLElement {
                 size: btnConfig.size || "medium",
                 backgroundColor: btnConfig.backgroundColor || null,
                 onClick: btnConfig.onClick || null,
+                href: btnConfig.href || null,
+                target: btnConfig.target || null,
             });
             wrapper.appendChild(btn);
         }
