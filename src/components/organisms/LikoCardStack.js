@@ -60,7 +60,7 @@ class LikoCardStack extends HTMLElement {
         stackContainer.className = tw`relative w-full`;
         const orientation = this.getAttribute("orientation") || "portrait";
         const isLandscape = orientation === "landscape";
-        stackContainer.style.maxWidth = isLandscape ? "min(100%, 800px)" : "min(100%, 600px)";
+        stackContainer.style.maxWidth = isLandscape ? "min(100%, 800px)" : "min(100%, 360px)";
         stackContainer.style.aspectRatio = isLandscape ? "4 / 3" : "3 / 4";
 
         this._stackContainer = stackContainer;

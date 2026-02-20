@@ -86,7 +86,6 @@ class LikoProjectDetail extends HTMLElement {
 
         if (description) {
             const p = document.createElement("p");
-            p.className = tw`text-foreground-60`;
             p.textContent = description;
             main.appendChild(p);
         }
