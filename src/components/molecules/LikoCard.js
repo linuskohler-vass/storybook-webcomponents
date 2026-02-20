@@ -82,7 +82,9 @@ class LikoCard extends HTMLElement {
                 primary: true,
                 href: buttonUrl,
                 target: buttonTarget,
-                onClick: buttonUrl ? undefined : () => this.dispatchEvent(new CustomEvent("button-click", { bubbles: true })),
+                onClick: buttonUrl
+                    ? undefined
+                    : () => this.dispatchEvent(new CustomEvent("button-click", { bubbles: true })),
             });
             buttonWrapper.appendChild(btn);
             body.appendChild(buttonWrapper);
@@ -97,7 +99,17 @@ if (!customElements.get("liko-card")) {
     customElements.define("liko-card", LikoCard);
 }
 
-export const LikoCardExport = ({ heading, text, imageSrc, imageAlt, buttonLabel, buttonUrl, buttonTarget, tags, onButtonClick }) => {
+export const LikoCardExport = ({
+    heading,
+    text,
+    imageSrc,
+    imageAlt,
+    buttonLabel,
+    buttonUrl,
+    buttonTarget,
+    tags,
+    onButtonClick,
+}) => {
     const card = document.createElement("liko-card");
     if (heading) card.setAttribute("heading", heading);
     if (text) card.setAttribute("text", text);
