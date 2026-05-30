@@ -1,6 +1,6 @@
 # Storybook + Tailwind CSS + Web Components
 
-A demo setup with Storybook, Tailwind CSS, and Web Components using the latest compatible versions as of **January 23, 2026**.
+A demo setup with Storybook, Tailwind CSS, and Web Components using the latest compatible versions as of **May 30, 2026**.
 Components are built using pure native Web Components (Custom Elements API).
 
 ## Features
