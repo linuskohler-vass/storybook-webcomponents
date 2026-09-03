@@ -17,6 +17,14 @@ const ICON_DEFAULTS = {
 const ICONS = {
     "chevron-left": ["M15 18l-6-6 6-6"],
     "chevron-right": ["M9 18l6-6-6-6"],
+    "chevron-up": ["M18 15l-6-6-6 6"],
+    "chevron-down": ["M6 9l6 6 6-6"],
+    ticket: [
+        "M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z",
+        "M13 5v2",
+        "M13 17v2",
+        "M13 11v2",
+    ],
     "rotate-cw": ["M21 2v6h-6", "M21 13a9 9 0 1 1-2.636-6.364L21 9"],
     "rotate-ccw": ["M3 2v6h6", "M3 13a9 9 0 1 0 2.636-6.364L3 9"],
 };

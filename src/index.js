@@ -7,6 +7,7 @@ import "./components/molecules/LikoCard.js";
 import "./components/molecules/LikoFilterBar.js";
 import "./components/molecules/LikoHeader.js";
 import "./components/molecules/LikoMetaList.js";
+import "./components/molecules/ZvvETicketCard.js";
 import "./components/organisms/LikoCardFilter.js";
 import "./components/organisms/LikoCardGrid.js";
 import "./components/organisms/LikoCardStack.js";
