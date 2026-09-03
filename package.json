@@ -1,14 +1,29 @@
 {
-  "name": "storybook-webcomponents",
+  "name": "liko-webcomponents",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Framework-agnostic web components built with Vite",
+  "type": "module",
+  "main": "./dist/index.js",
+  "style": "./dist/styles.css",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./components/*": "./dist/*.js",
+    "./styles.css": "./dist/styles.css"
+  },
+  "sideEffects": true,
   "scripts": {
     "start": "npm run storybook",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "vite build",
+    "package": "node -e \"require('node:fs').mkdirSync('artifacts', { recursive: true })\" && npm pack --pack-destination artifacts",
+    "package:check": "npm pack --dry-run",
+    "prepack": "npm run build",
     "format": "prettier --write './src/**/*.{css,js,jsx}' './stories/**/*.{js,jsx}'",
     "lint:js": "eslint './src/**/*.{js,jsx}' './stories/**/*.{js,jsx}'",
     "lint": "npm run format && npm run lint:js"
