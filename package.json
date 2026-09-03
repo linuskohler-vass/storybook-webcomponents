@@ -17,16 +17,22 @@
   "sideEffects": true,
   "scripts": {
     "start": "npm run storybook",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run test:unit && npm run test:a11y",
+    "test:unit": "vitest run --project unit",
+    "test:a11y": "vitest run --project storybook",
+    "test:browsers": "TEST_BROWSERS=chromium,firefox,webkit vitest run --project storybook",
+    "test:core-web-vitals": "npm run build-storybook && lhci autorun",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "vite build",
+    "chromatic": "chromatic",
     "package": "node -e \"require('node:fs').mkdirSync('artifacts', { recursive: true })\" && npm pack --pack-destination artifacts",
     "package:check": "npm pack --dry-run",
     "prepack": "npm run build",
     "format": "prettier --write './src/**/*.{css,js,jsx}' './stories/**/*.{js,jsx}'",
+    "format:check": "prettier --check './src/**/*.{css,js,jsx}' './stories/**/*.{js,jsx}'",
     "lint:js": "eslint './src/**/*.{js,jsx}' './stories/**/*.{js,jsx}'",
-    "lint": "npm run format && npm run lint:js"
+    "lint": "npm run format:check && npm run lint:js"
   },
   "repository": {
     "type": "git",
@@ -41,6 +47,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.1",
     "@eslint/js": "^9.39.2",
+    "@lhci/cli": "^0.15.1",
     "@storybook/addon-a11y": "^10.2.8",
     "@storybook/addon-docs": "^10.2.8",
     "@storybook/addon-vitest": "^10.2.8",

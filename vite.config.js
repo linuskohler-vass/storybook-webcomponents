@@ -13,7 +13,7 @@ const componentFiles = readdirSync(componentsDir)
   .filter(sub => statSync(resolve(componentsDir, sub)).isDirectory())
   .flatMap(sub =>
     readdirSync(resolve(componentsDir, sub))
-      .filter(file => file.endsWith('.js'))
+      .filter(file => file.endsWith('.js') && !file.endsWith('.test.js'))
       .map(file => [file.replace('.js', '').toLowerCase(), resolve(componentsDir, sub, file)])
   )
   .reduce((entries, [name, path]) => {

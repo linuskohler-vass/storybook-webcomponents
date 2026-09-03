@@ -20,6 +20,27 @@ Run the Storybook project:
 npm start
 ```
 
+## Pull Request Checks
+
+Every pull request runs formatting and ESLint checks, the package and Storybook builds, unit tests, Storybook accessibility tests, browser tests in Chromium, Firefox, and WebKit, Chromatic visual regression tests, and Lighthouse Core Web Vitals checks.
+
+Run the checks locally with:
+
+```bash
+npm run lint
+npm run build
+npm run test:unit
+npm run test:browsers
+npm run test:a11y
+npm run test:core-web-vitals
+```
+
+Install the required Playwright browsers once before running browser-based tests:
+
+```bash
+npx playwright install chromium firefox webkit
+```
+
 ## Building
 Use the Node.js version declared in `.nvmrc` and generate the production bundle:
 ```bash

@@ -1,0 +1,105 @@
+name: Pull request checks
+
+on:
+    pull_request:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: pull-request-checks-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
+jobs:
+    quality:
+        name: Lint and build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+                  cache: npm
+            - run: npm ci
+            - run: npm run lint
+            - run: npm run build
+            - run: npm run build-storybook
+
+    unit-tests:
+        name: Unit tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+                  cache: npm
+            - run: npm ci
+            - run: npx playwright install --with-deps chromium
+            - run: npm run test:unit
+
+    browser-compatibility:
+        name: Browser compatibility
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+                  cache: npm
+            - run: npm ci
+            - run: npx playwright install --with-deps chromium firefox webkit
+            - run: npm run test:browsers
+
+    accessibility:
+        name: Storybook accessibility
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+                  cache: npm
+            - run: npm ci
+            - run: npx playwright install --with-deps chromium
+            - run: npm run test:a11y
+
+    visual-regression:
+        name: Chromatic visual regression
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+                  cache: npm
+            - run: npm ci
+            - name: Verify Chromatic token
+              env:
+                  CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+              run: test -n "$CHROMATIC_PROJECT_TOKEN"
+            - name: Run Chromatic
+              env:
+                  CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+              run: npm run chromatic
+
+    core-web-vitals:
+        name: Core Web Vitals
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+                  cache: npm
+            - run: npm ci
+            - run: npm run test:core-web-vitals
+            - name: Upload Lighthouse reports
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: lighthouse-reports
+                  path: .lighthouseci
+                  if-no-files-found: ignore
