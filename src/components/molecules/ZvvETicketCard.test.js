@@ -2,14 +2,38 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ZvvETicketCardExport } from "./ZvvETicketCard.js";
 
-const createCard = (overrides = {}) => {
-    const card = ZvvETicketCardExport({
-        heading: "Gültige E-Tickets",
-        zones: ["Zone 143", "Zone 144"],
-        receiptNumber: "1428757139",
+const defaultTicket = {
+    passengerName: "Satoshi Nakamoto",
+    provider: "Zürcher Verkehrsverbund",
+    product: "ZVV Einzelbillett",
+    zones: ["Zone 143", "Zone 144"],
+    travelClass: "2. Klasse, Vollpreis",
+    validity: "09.09.2025 16:36 – 09.09.2025 17:36",
+    receipt: { label: "Kaufbeleg", number: "1428757139" },
+    actions: {
         refundLabel: "Ticket erstatten",
         downloadLabel: "Ticket herunterladen",
-        ...overrides,
+    },
+    qrCode: { alt: "QR-Code für das ZVV Einzelbillett" },
+};
+
+const createCard = ({
+    heading = "Gültige E-Tickets",
+    subtitle = "Aktive Tickets anzeigen",
+    ticket = {},
+    ...options
+} = {}) => {
+    const card = ZvvETicketCardExport({
+        heading,
+        subtitle,
+        ticket: {
+            ...defaultTicket,
+            ...ticket,
+            receipt: { ...defaultTicket.receipt, ...ticket.receipt },
+            actions: { ...defaultTicket.actions, ...ticket.actions },
+            qrCode: { ...defaultTicket.qrCode, ...ticket.qrCode },
+        },
+        ...options,
     });
     document.body.appendChild(card);
     return card;
@@ -20,11 +44,35 @@ afterEach(() => {
 });
 
 describe("ZvvETicketCard", () => {
-    it("serializes and normalizes zones", () => {
-        const card = createCard({ zones: ["Zone 143", " Zone 144 ", ""] });
+    it("requires a ticket object", () => {
+        expect(() => ZvvETicketCardExport({})).toThrow("requires a ticket object");
+    });
 
-        expect(card.getAttribute("zones")).toBe("Zone 143, Zone 144 ,");
-        expect(card.zones).toEqual(["Zone 143", "Zone 144"]);
+    it("normalizes zones from the ticket object", () => {
+        const card = createCard({ ticket: { zones: ["Zone 143", " Zone 144 ", ""] } });
+
+        expect(card.ticket.zones).toEqual(["Zone 143", "Zone 144"]);
+        expect(card.querySelectorAll("article span")).toHaveLength(2);
+    });
+
+    it("accepts serialized ticket data for declarative HTML", () => {
+        const card = document.createElement("zvv-eticket-card");
+        card.setAttribute("heading", "Ticket");
+        card.setAttribute(
+            "ticket-data",
+            JSON.stringify({
+                passengerName: "Ada Lovelace",
+                receipt: { label: "Beleg", number: "1234" },
+            }),
+        );
+        document.body.appendChild(card);
+
+        expect(card.ticket).toMatchObject({
+            passengerName: "Ada Lovelace",
+            receipt: { label: "Beleg", number: "1234" },
+        });
+        expect(card.querySelector("button[aria-controls]").textContent).toContain("Ticket");
+        expect(card.querySelector("article").textContent).toContain("Beleg: 1234");
     });
 
     it("emits the receipt number for ticket actions", () => {

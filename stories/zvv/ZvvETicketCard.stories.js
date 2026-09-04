@@ -42,14 +42,14 @@ export default {
                 rules: [
                     {
                         id: "color-contrast",
-                        selector: "*:not(.text-\\[\\#f4511e\\]):not(.bg-\\[\\#0785d1\\])",
+                        selector: "*:not(.text-\\[\\#ff6800\\]):not(.bg-\\[\\#0479cc\\])",
                     },
                 ],
             },
         },
         docs: {
             description: {
-                component: `The ETicketCard component presents an electronic ticket together with passenger, validity, zone, receipt, and QR-code information. Its ticket details can be expanded or collapsed.
+                component: `The ETicketCard is a self-rendering Web Component. Consumers provide heading and subtitle as component configuration, all ticket domain data as one structured object, and listen for component events without redefining its markup. The object can be assigned through the ticket property in plain JavaScript, React/Next.js, and Angular; static HTML can provide the same contract as JSON through the ticket-data attribute.
 
 ## Accessibility
 
@@ -64,35 +64,32 @@ export default {
     argTypes: {
         heading: { control: "text" },
         subtitle: { control: "text" },
-        passengerName: { control: "text" },
-        provider: { control: "text" },
-        product: { control: "text" },
-        zones: { control: "object" },
-        travelClass: { control: "text" },
-        validity: { control: "text" },
-        receiptLabel: { control: "text" },
-        receiptNumber: { control: "text" },
-        refundLabel: { control: "text" },
-        downloadLabel: { control: "text" },
-        qrCodeSrc: { control: "text" },
-        qrCodeAlt: { control: "text" },
+        ticket: { control: "object" },
         expanded: { control: "boolean" },
     },
     args: {
         heading: "Gültige E-Tickets",
         subtitle: "Aktive Tickets anzeigen",
-        passengerName: "Satoshi Nakamoto",
-        provider: "Zürcher Verkehrsverbund",
-        product: "ZVV Einzelbillett",
-        zones: ["Zone 143", "Zone 144"],
-        travelClass: "2. Klasse, Vollpreis",
-        validity: "09.09.2025 16:36 – 09.09.2025 17:36",
-        receiptLabel: "Kaufbeleg",
-        receiptNumber: "1428757139",
-        refundLabel: "Ticket erstatten",
-        downloadLabel: "Ticket herunterladen",
-        qrCodeSrc,
-        qrCodeAlt: "QR-Code für das ZVV Einzelbillett",
+        ticket: {
+            passengerName: "Satoshi Nakamoto",
+            provider: "Zürcher Verkehrsverbund",
+            product: "ZVV Einzelbillett",
+            zones: ["Zone 143", "Zone 144"],
+            travelClass: "2. Klasse, Vollpreis",
+            validity: "09.09.2025 16:36 – 09.09.2025 17:36",
+            receipt: {
+                label: "Kaufbeleg",
+                number: "1428757139",
+            },
+            actions: {
+                refundLabel: "Ticket erstatten",
+                downloadLabel: "Ticket herunterladen",
+            },
+            qrCode: {
+                src: qrCodeSrc,
+                alt: "QR-Code für das ZVV Einzelbillett",
+            },
+        },
         expanded: true,
         onRefundRequest: fn(),
         onDownloadRequest: fn(),

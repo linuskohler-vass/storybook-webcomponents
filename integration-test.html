@@ -41,18 +41,26 @@
     <zvv-eticket-card
       heading="Gültige E-Tickets"
       subtitle="Aktive Tickets anzeigen"
-      passenger-name="Satoshi Nakamoto"
-      provider="Zürcher Verkehrsverbund"
-      product="ZVV Einzelbillett"
-      zones="Zone 143,Zone 144"
-      travel-class="2. Klasse, Vollpreis"
-      validity="09.09.2025 16:36 – 09.09.2025 17:36"
-      receipt-label="Kaufbeleg"
-      receipt-number="1428757139"
-      refund-label="Ticket erstatten"
-      download-label="Ticket herunterladen"
-      qr-code-src="https://api.qrserver.com/v1/create-qr-code/?size=224x224&amp;data=ZVV-1428757139"
-      qr-code-alt="QR-Code für das ZVV Einzelbillett"
+      ticket-data='{
+        "passengerName": "Satoshi Nakamoto",
+        "provider": "Zürcher Verkehrsverbund",
+        "product": "ZVV Einzelbillett",
+        "zones": ["Zone 143", "Zone 144"],
+        "travelClass": "2. Klasse, Vollpreis",
+        "validity": "09.09.2025 16:36 – 09.09.2025 17:36",
+        "receipt": {
+          "label": "Kaufbeleg",
+          "number": "1428757139"
+        },
+        "actions": {
+          "refundLabel": "Ticket erstatten",
+          "downloadLabel": "Ticket herunterladen"
+        },
+        "qrCode": {
+          "src": "https://api.qrserver.com/v1/create-qr-code/?size=224x224&amp;data=ZVV-1428757139",
+          "alt": "QR-Code für das ZVV Einzelbillett"
+        }
+      }'
     ></zvv-eticket-card>
   </section>
 </body>
