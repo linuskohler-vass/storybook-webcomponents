@@ -115,16 +115,18 @@ class ZvvETicketCard extends HTMLElement {
         );
         const header = createElement(
             "button",
-            tw`flex w-full cursor-pointer items-center gap-6 border-0 bg-white px-8 py-7 text-left`,
+            tw`flex w-full cursor-pointer items-center gap-4 border-0 bg-white p-6 text-left transition-colors hover:bg-[var(--color-gray-50)]`,
         );
         header.type = "button";
         header.setAttribute("aria-expanded", String(this.expanded));
         header.setAttribute("aria-controls", this._contentId);
 
         const ticketIcon = createIcon("ticket", { width: "24", height: "24" });
-        ticketIcon.classList.add("lucide", "lucide-ticket", "size-6", "shrink-0", "text-[#0088d4]");
+        ticketIcon.classList.add("lucide", "lucide-ticket", "size-6", "text-[#0088d4]");
         ticketIcon.setAttribute("aria-hidden", "true");
-        header.appendChild(ticketIcon);
+        const ticketIconWrapper = createElement("div", tw`size-10 flex items-center justify-center shrink-0`);
+        ticketIconWrapper.appendChild(ticketIcon);
+        header.appendChild(ticketIconWrapper);
 
         const headerText = createElement("span", tw`min-w-0 grow`);
         headerText.appendChild(
@@ -152,9 +154,9 @@ class ZvvETicketCard extends HTMLElement {
             tw`grid transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none`,
         );
         const contentClip = createElement("div", tw`min-h-0 overflow-hidden`);
-        const content = createElement("div", tw`border-t border-[#d5dde6] px-6 py-6`);
+        const content = createElement("div", tw`border-t border-[#d5dde6] p-6`);
         content.id = this._contentId;
-        const ticket = createElement("article", tw`border border-[#d5dde6] px-6 py-7`);
+        const ticket = createElement("article", tw`border border-[#d5dde6] p-6`);
         const details = createElement("div", tw`grid grid-cols-1 gap-6 sm:grid-cols-[minmax(0,1fr)_7rem] sm:gap-10`);
         const text = createElement("div", tw`min-w-0 text-sm text-[#46536a]`);
 
@@ -166,17 +168,17 @@ class ZvvETicketCard extends HTMLElement {
             const zones = createElement("div", tw`mb-2 flex flex-wrap gap-2`);
             for (const zone of this.zones)
                 zones.appendChild(
-                    createElement("span", tw`rounded-sm bg-[#edf2ff] px-2 py-1 text-xs font-bold text-[#0046d5]`, zone),
+                    createElement("span", tw`rounded-sm bg-[#edf2ff] px-2 py-1 text-xs font-bold text-[#004de5]`, zone),
                 );
             text.appendChild(zones);
         }
 
         text.appendChild(createElement("p", tw`mb-4 text-sm leading-5 font-semibold`, travelClass));
-        text.appendChild(createElement("p", tw`mb-1 text-sm leading-5 font-bold text-[#f4511e]`, validity));
+        text.appendChild(createElement("p", tw`mb-1 text-sm leading-5 font-bold text-[#ff6800]`, validity));
         text.appendChild(
             createElement(
                 "p",
-                tw`mb-0 text-sm leading-5 font-bold text-[#f4511e]`,
+                tw`mb-0 text-sm leading-5 font-bold text-[#ff6800]`,
                 receiptNumber ? [receiptLabel, receiptNumber].filter(Boolean).join(": ") : "",
             ),
         );
@@ -195,7 +197,7 @@ class ZvvETicketCard extends HTMLElement {
         ticket.appendChild(details);
 
         const actions = createElement("div", tw`mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2`);
-        const buttonClasses = tw`min-h-10 cursor-pointer rounded-md border-0 bg-[#0785d1] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#006fb3] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006fb3]`;
+        const buttonClasses = tw`min-h-10 cursor-pointer rounded-md border-0 bg-[#0479cc] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#006fb3] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006fb3]`;
 
         if (refundLabel) {
             const refund = createElement("button", buttonClasses, refundLabel);
