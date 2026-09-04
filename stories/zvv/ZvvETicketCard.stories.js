@@ -49,7 +49,14 @@ export default {
         },
         docs: {
             description: {
-                component: `The ETicketCard is a self-rendering Web Component. Consumers provide heading and subtitle as component configuration, all ticket domain data as one structured object, and listen for component events without redefining its markup. The object can be assigned through the ticket property in plain JavaScript, React/Next.js, and Angular; static HTML can provide the same contract as JSON through the ticket-data attribute.
+                component: `The ETicketCard is a self-rendering Web Component. Pass heading and subtitle separately and provide ticket data through the required **ticket** object property or the JSON **ticket-data** attribute. For the ticket props see the stories.
+
+## Events
+Possible to override if not handled inside the component.
+
+- **refund-request** and **download-request** include **{ receiptNumber }**.
+- **expanded-change** includes **{ expanded }**.
+- **ticket-data-error** includes **{ error }** when JSON parsing fails.
 
 ## Accessibility
 
@@ -64,8 +71,16 @@ export default {
     argTypes: {
         heading: { control: "text" },
         subtitle: { control: "text" },
-        ticket: { control: "object" },
+        ticket: {
+            control: "object",
+            description: "Required structured ticket data.",
+            type: { name: "object", required: true },
+            table: { type: { summary: "ZvvETicket" } },
+        },
         expanded: { control: "boolean" },
+        onRefundRequest: { control: false, description: "Handles the refund-request event." },
+        onDownloadRequest: { control: false, description: "Handles the download-request event." },
+        onExpandedChange: { control: false, description: "Handles the expanded-change event." },
     },
     args: {
         heading: "Gültige E-Tickets",
