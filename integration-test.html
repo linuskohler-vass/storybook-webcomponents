@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liko Components - Integration Test</title>
-  <link rel="stylesheet" href="./dist/main-Yvpo950q.css">
-  <script type="module" src="./dist/likocard-DTPYtT3E.js"></script>
+  <link rel="stylesheet" href="./dist/styles.css">
+  <script type="module" src="./dist/likocard.js"></script>
+  <script type="module" src="./dist/zvveticketcard.js"></script>
   <style>
   </style>
 </head>
@@ -35,5 +36,32 @@
       button-label="Enjoy"
     ></liko-card>
   </div>
+  <section style="max-width: 760px; margin: 40px 20px;">
+    <h2>ZVV ETicketCard</h2>
+    <zvv-eticket-card
+      heading="Gültige E-Tickets"
+      subtitle="Aktive Tickets anzeigen"
+      ticket-data='{
+        "passengerName": "Satoshi Nakamoto",
+        "provider": "Zürcher Verkehrsverbund",
+        "product": "ZVV Einzelbillett",
+        "zones": ["Zone 143", "Zone 144"],
+        "travelClass": "2. Klasse, Vollpreis",
+        "validity": "09.09.2025 16:36 – 09.09.2025 17:36",
+        "receipt": {
+          "label": "Kaufbeleg",
+          "number": "1428757139"
+        },
+        "actions": {
+          "refundLabel": "Ticket erstatten",
+          "downloadLabel": "Ticket herunterladen"
+        },
+        "qrCode": {
+          "src": "https://api.qrserver.com/v1/create-qr-code/?size=224x224&amp;data=ZVV-1428757139",
+          "alt": "QR-Code für das ZVV Einzelbillett"
+        }
+      }'
+    ></zvv-eticket-card>
+  </section>
 </body>
 </html>
