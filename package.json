@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run storybook",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run --project storybook",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "vite build",
     "format": "prettier --write './src/**/*.{css,js,jsx}' './stories/**/*.{js,jsx}'",
+    "format:check": "prettier --check './src/**/*.{css,js,jsx}' './stories/**/*.{js,jsx}'",
     "lint:js": "eslint './src/**/*.{js,jsx}' './stories/**/*.{js,jsx}'",
-    "lint": "npm run format && npm run lint:js"
+    "lint": "npm run format:check && npm run lint:js"
   },
   "repository": {
     "type": "git",
@@ -25,15 +26,15 @@
   "homepage": "https://github.com/linuskohler-vass/storybook-webcomponents#readme",
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.1",
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "@storybook/addon-a11y": "^10.2.8",
     "@storybook/addon-docs": "^10.2.8",
     "@storybook/addon-vitest": "^10.2.8",
     "@storybook/web-components-vite": "^10.2.8",
     "@tailwindcss/postcss": "^4.1.18",
-    "@vitest/browser-playwright": "^4.0.18",
-    "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "^9.39.2",
+    "@vitest/browser-playwright": "^5.0.3",
+    "@vitest/coverage-v8": "^5.0.3",
+    "eslint": "^10.12.0",
     "eslint-plugin-storybook": "^10.2.8",
     "globals": "^17.3.0",
     "lit": "^3.3.2",
@@ -43,7 +44,7 @@
     "prettier-plugin-tailwindcss": "^0.8.0",
     "storybook": "^10.2.8",
     "tailwindcss": "^4.1.18",
-    "vite": "^7.1.12",
-    "vitest": "^4.0.18"
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
   }
 }

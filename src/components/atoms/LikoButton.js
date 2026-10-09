@@ -25,7 +25,7 @@ class LikoButton extends HTMLElement {
 
         const baseClasses = tw`inline-block cursor-pointer rounded-3xl border-0 leading-none font-bold no-underline`;
 
-        let sizeClasses = "";
+        let sizeClasses;
         switch (size) {
             case "small":
                 sizeClasses = tw`px-4 py-2.5 text-xs`;
