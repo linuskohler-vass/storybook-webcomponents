@@ -5,8 +5,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
+const testBrowsers = (process.env.TEST_BROWSERS || 'chromium').split(',');
 
-import viteConfig from './vite.config';
+import viteConfig from './vite.config.js';
 
 export default mergeConfig(
   viteConfig,
@@ -27,7 +28,7 @@ export default mergeConfig(
               enabled: true,
               provider: playwright({}),
               headless: true,
-              instances: [{ browser: 'chromium' }],
+              instances: testBrowsers.map((browser) => ({ browser })),
             },
             setupFiles: ['./.storybook/vitest.setup.js'],
           },

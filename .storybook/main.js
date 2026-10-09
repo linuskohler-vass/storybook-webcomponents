@@ -3,7 +3,6 @@
 /** @type { import('@storybook/web-components-vite').StorybookConfig } */
 const config = {
   "stories": [
-    "../stories/**/*.mdx",
     "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
   "addons": [
@@ -25,4 +24,4 @@ const config = {
     });
   },
 };
-module.exports = config;
+export default config;
