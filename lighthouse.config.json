@@ -1,0 +1,13 @@
+{
+  "staticDistDir": "./storybook-static",
+  "stories": ["pages-likohomepage--default", "pages-likocardgridpage--default"],
+  "numberOfRuns": 3,
+  "preset": "desktop",
+  "budgets": {
+    "performance": { "min": 0.8, "level": "error" },
+    "largest-contentful-paint": { "max": 2500, "level": "error" },
+    "cumulative-layout-shift": { "max": 0.1, "level": "error" },
+    "total-blocking-time": { "max": 200, "level": "error" }
+  },
+  "outputDir": ".lighthouse-reports"
+}
