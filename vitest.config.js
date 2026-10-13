@@ -37,6 +37,7 @@ export default mergeConfig(
           ],
           test: {
             name: 'storybook',
+            testTimeout: 30000,
             browser: {
               enabled: true,
               provider: playwright({}),
