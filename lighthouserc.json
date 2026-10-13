@@ -1,0 +1,25 @@
+{
+    "ci": {
+        "collect": {
+            "staticDistDir": "./storybook-static",
+            "url": ["http://localhost/iframe.html?id=zvv-eticketcard--default&viewMode=story"],
+            "numberOfRuns": 3,
+            "settings": {
+                "preset": "desktop",
+                "chromeFlags": "--no-sandbox"
+            }
+        },
+        "assert": {
+            "assertions": {
+                "categories:performance": ["error", { "minScore": 0.8 }],
+                "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
+                "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+                "total-blocking-time": ["error", { "maxNumericValue": 200 }]
+            }
+        },
+        "upload": {
+            "target": "filesystem",
+            "outputDir": ".lighthouseci"
+        }
+    }
+}

@@ -20,15 +20,78 @@ Run the Storybook project:
 npm start
 ```
 
-## Building
-To generate the production bundle:
+## Pull Request Checks
+
+Every pull request runs formatting and ESLint checks, the package and Storybook builds, unit tests, Storybook accessibility tests, browser tests in Chromium, Firefox, and WebKit, Chromatic visual regression tests, and Lighthouse Core Web Vitals checks.
+
+Run the checks locally with:
+
 ```bash
+npm run lint
+npm run build
+npm run test:unit
+npm run test:browsers
+npm run test:a11y
+npm run test:core-web-vitals
+```
+
+Install the required Playwright browsers once before running browser-based tests:
+
+```bash
+npx playwright install chromium firefox webkit
+```
+
+## Building
+Use the Node.js version declared in `.nvmrc` and generate the production bundle:
+```bash
+nvm use
 npm run build
 ```
 
-This will place all resources in `/dist`:
-- Individual component JS files
-- The required Tailwind styles in a minified `main.css` (only with the styles in use)
+This places the complete browser distribution in `/dist`:
+- `index.js` registers all components
+- Individual component entry points such as `likocard.js`
+- The required Tailwind styles in a minified `styles.css`
+- Shared JavaScript chunks, fonts, and other assets
+
+The output uses standard ES modules and can be consumed by applications bundled with Vite, Webpack, Next.js, or Angular.
+
+## NPM Package
+Inspect the package contents without creating an archive:
+```bash
+npm run package:check
+```
+
+Create the installable NPM package archive:
+```bash
+npm run package
+```
+
+The command creates the `artifacts/` directory, runs the Vite production build, and writes `artifacts/liko-webcomponents-1.0.0.tgz`. A consumer can install the local package with:
+```bash
+npm install /path/to/artifacts/liko-webcomponents-1.0.0.tgz
+```
+
+Import all components and the stylesheet:
+```javascript
+import 'liko-webcomponents';
+import 'liko-webcomponents/styles.css';
+```
+
+Alternatively, import a single component entry point:
+```javascript
+import 'liko-webcomponents/components/likocard';
+import 'liko-webcomponents/styles.css';
+```
+
+## Static Hosting / CDN
+The same `/dist` directory can be served from any static host or CDN. To verify it locally:
+```bash
+npm run build
+python3 -m http.server 8080
+```
+
+Open `http://localhost:8080/integration-test.html`. A production deployment can publish the contents under an immutable version path such as `/components/1.0.0/`.
 
 ## Instructions for Creating New Components
 

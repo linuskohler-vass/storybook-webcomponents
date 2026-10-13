@@ -1,4 +1,7 @@
 /node_modules/
 /dist/
+/artifacts/
 /storybook-static/
+/.lighthouseci/
 /.lighthouse-reports/
+*.log

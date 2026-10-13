@@ -16,6 +16,19 @@ export default mergeConfig(
       projects: [
         {
           extends: true,
+          test: {
+            name: 'unit',
+            include: ['src/**/*.test.js'],
+            browser: {
+              enabled: true,
+              provider: playwright({}),
+              headless: true,
+              instances: testBrowsers.map((browser) => ({ browser })),
+            },
+          },
+        },
+        {
+          extends: true,
           plugins: [
             storybookTest({
               configDir: path.join(dirname, '.storybook'),
@@ -24,6 +37,7 @@ export default mergeConfig(
           ],
           test: {
             name: 'storybook',
+            testTimeout: 30000,
             browser: {
               enabled: true,
               provider: playwright({}),
