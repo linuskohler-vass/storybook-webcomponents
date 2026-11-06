@@ -13,7 +13,7 @@ const componentFiles = readdirSync(componentsDir)
   .filter(sub => statSync(resolve(componentsDir, sub)).isDirectory())
   .flatMap(sub =>
     readdirSync(resolve(componentsDir, sub))
-      .filter(file => file.endsWith('.js'))
+      .filter(file => file.endsWith('.js') && !file.endsWith('.test.js'))
       .map(file => [file.replace('.js', '').toLowerCase(), resolve(componentsDir, sub, file)])
   )
   .reduce((entries, [name, path]) => {
@@ -28,16 +28,16 @@ export default defineConfig({
     assetsInlineLimit: 0,
     rollupOptions: {
       input: {
+        index: resolve(__dirname, 'src/index.js'),
         ...componentFiles,
         styles: resolve(__dirname, 'src/tailwind.css'),
       },
       output: {
-        entryFileNames: (chunkInfo) => {
-          return chunkInfo.name === 'styles' ? 'js/[name]-[hash].js' : '[name]-[hash].js';
-        },
+        entryFileNames: '[name].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-            return 'main-[hash].css';
+            return 'styles.css';
           }
           if (assetInfo.name && /\.(ttf|otf|eot|woff2?)$/.test(assetInfo.name)) {
             return 'assets/fonts/[name][extname]';

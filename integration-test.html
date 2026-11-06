@@ -4,8 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liko Components - Integration Test</title>
-  <link rel="stylesheet" href="./dist/main-Yvpo950q.css">
-  <script type="module" src="./dist/likocard-DTPYtT3E.js"></script>
+  <!-- Loads the versioned CDN bundle (npm run build:cdn), mirroring production usage. -->
+  <script type="module">
+    const { version } = await fetch("./package.json").then((res) => res.json());
+
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = `./cdn/${version}/styles.css`;
+    document.head.appendChild(stylesheet);
+
+    await import(`./cdn/${version}/likocard.js`);
+  </script>
   <style>
   </style>
 </head>

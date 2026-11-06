@@ -1,6 +1,6 @@
 # Storybook + Tailwind CSS + Web Components
 
-A demo setup with Storybook, Tailwind CSS, and Web Components using the latest compatible versions as of **May 30, 2026**.
+A demo setup with Storybook, Tailwind CSS, and Web Components using the latest compatible versions as of **Nov 6, 2026**.
 Components are built using pure native Web Components (Custom Elements API).
 
 ## Features
@@ -20,15 +20,91 @@ Run the Storybook project:
 npm start
 ```
 
-## Building
-To generate the production bundle:
+## Pull Request Checks
+
+Every pull request runs formatting and ESLint checks, the package and Storybook builds, Storybook accessibility and interaction tests, browser tests in Chromium, Firefox, and WebKit, Chromatic visual regression tests, and Lighthouse performance audits.
+
+Run the checks locally with:
+
 ```bash
+npm run lint
+npm run build
+npm run test:browsers
+npm run test:a11y
+npm run test:lighthouse
+```
+
+Install the required Playwright browsers once before running browser-based tests:
+
+```bash
+npx playwright install chromium firefox webkit
+```
+
+## Building
+Use the Node.js version declared in `.nvmrc` and generate the production bundle:
+```bash
+nvm use
 npm run build
 ```
 
-This will place all resources in `/dist`:
-- Individual component JS files
-- The required Tailwind styles in a minified `main.css` (only with the styles in use)
+This places the complete browser distribution in `/dist`:
+- `index.js` registers all components
+- Individual component entry points such as `likocard.js`
+- The required Tailwind styles in a minified `styles.css` (only with the styles in use)
+- Shared JavaScript chunks, fonts, and other assets
+
+The output uses standard ES modules and can be consumed by applications bundled with Vite, Webpack, Next.js, or Angular.
+
+## NPM Package
+Inspect the package contents without creating an archive:
+```bash
+npm run package:check
+```
+
+Create the installable NPM package archive:
+```bash
+npm run package
+```
+
+The command creates the `artifacts/` directory, runs the Vite production build, and writes `artifacts/liko-webcomponents-1.0.0.tgz`. A consumer can install the local package with:
+```bash
+npm install /path/to/artifacts/liko-webcomponents-1.0.0.tgz
+```
+
+Import all components and the stylesheet:
+```javascript
+import 'liko-webcomponents';
+import 'liko-webcomponents/styles.css';
+```
+
+Alternatively, import a single component entry point:
+```javascript
+import 'liko-webcomponents/components/likocard';
+import 'liko-webcomponents/styles.css';
+```
+
+## Static Hosting / CDN
+For direct inclusion on a page (without npm), generate a versioned bundle:
+```bash
+npm run build:cdn
+```
+
+This runs the same Vite build as `npm run build` and copies `dist/` to `/cdn/<version>/`, where `<version>` always matches the `version` field in `package.json` — the same version `npm pack` and `npm publish` would use. CDN consumers and npm consumers therefore get identical files; only the URL layout differs. Publish each release to an immutable version path such as `/components/1.0.0/` and serve it with long-lived cache headers:
+
+```html
+<link rel="stylesheet" href="/components/1.0.0/styles.css">
+<script type="module" src="/components/1.0.0/index.js"></script>
+```
+
+Never overwrite an already published version path; consumers upgrade by bumping the version in the URL.
+
+To verify the versioned bundle in a browser exactly as a consumer would load it:
+```bash
+npm run build:cdn
+python3 -m http.server 8080
+```
+
+Open `http://localhost:8080/integration-test.html` — it reads the version from `package.json` and loads the assets from `./cdn/<version>/`, the same versioned URLs a consumer would use.
 
 ## Instructions for Creating New Components
 
@@ -85,7 +161,7 @@ After building, use the components in your HTML:
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="./dist/main.css">
+  <link rel="stylesheet" href="./dist/styles.css">
 </head>
 <body>
   <my-component></my-component>
