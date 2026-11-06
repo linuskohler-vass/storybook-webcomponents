@@ -1,7 +1,19 @@
 import { tw } from "../../utils/tw.js";
-import "../molecules/LikoCard";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr } from "../../utils/html.js";
 
-class LikoCardGrid extends HTMLElement {
+const likoCardTag = (card, i) =>
+    `<liko-card${attr("heading", card.heading)}${attr("text", card.text)}${attr("image-src", card.imageSrc)}${attr("image-alt", card.imageAlt)}${attr("button-label", card.buttonLabel)}${attr("button-url", card.buttonUrl)}${attr("button-target", card.buttonTarget)} data-index="${i}"></liko-card>`;
+
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoCardGrid = ({ cards = [] }) => {
+    const items = cards.map((card, i) => likoCardTag(card, i)).join("");
+    return `<div class="${tw`grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3`}">${items}</div>`;
+};
+
+export class LikoCardGrid extends ElementBase {
     get cards() {
         return this._cards || [];
     }
@@ -16,30 +28,13 @@ class LikoCardGrid extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = "";
+        this.innerHTML = renderLikoCardGrid({ cards: this.cards });
 
-        const grid = document.createElement("div");
-        grid.className = tw`grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3`;
-
-        for (const card of this.cards) {
-            const el = document.createElement("liko-card");
-            if (card.heading) el.setAttribute("heading", card.heading);
-            if (card.text) el.setAttribute("text", card.text);
-            if (card.imageSrc) el.setAttribute("image-src", card.imageSrc);
-            if (card.imageAlt) el.setAttribute("image-alt", card.imageAlt);
-            if (card.buttonLabel) el.setAttribute("button-label", card.buttonLabel);
-            if (card.buttonUrl) el.setAttribute("button-url", card.buttonUrl);
-            if (card.buttonTarget) el.setAttribute("button-target", card.buttonTarget);
-            if (card.tags) el.tags = card.tags;
-            grid.appendChild(el);
+        for (const el of this.querySelectorAll("liko-card")) {
+            const tags = this.cards[Number(el.dataset.index)]?.tags;
+            if (tags) el.tags = tags;
         }
-
-        this.appendChild(grid);
     }
-}
-
-if (!customElements.get("liko-card-grid")) {
-    customElements.define("liko-card-grid", LikoCardGrid);
 }
 
 export const LikoCardGridExport = ({ cards = [] }) => {

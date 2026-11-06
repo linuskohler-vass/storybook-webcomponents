@@ -1,6 +1,22 @@
 import { tw } from "../../utils/tw.js";
+import { ElementBase } from "../../utils/element-base.js";
+import { escapeHtml } from "../../utils/html.js";
 
-class LikoMetaList extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoMetaList = ({ items = [] }) => {
+    const groups = items
+        .map(
+            (item) =>
+                `<div class="${tw`border-b border-border pb-4 last:border-b-0`}"><dt class="${tw`text-xs font-semibold tracking-wide text-foreground-40 uppercase`}">${escapeHtml(item.label)}</dt><dd class="${tw`mt-1 text-sm leading-snug text-text`}">${escapeHtml(item.value)}</dd></div>`,
+        )
+        .join("");
+
+    return `<dl class="${tw`flex flex-col gap-4`}">${groups}</dl>`;
+};
+
+export class LikoMetaList extends ElementBase {
     get items() {
         return this._items || [];
     }
@@ -15,34 +31,8 @@ class LikoMetaList extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = "";
-
-        const list = document.createElement("dl");
-        list.className = tw`flex flex-col gap-4`;
-
-        for (const item of this.items) {
-            const group = document.createElement("div");
-            group.className = tw`border-b border-border pb-4 last:border-b-0`;
-
-            const dt = document.createElement("dt");
-            dt.className = tw`text-xs font-semibold tracking-wide text-foreground-40 uppercase`;
-            dt.textContent = item.label;
-            group.appendChild(dt);
-
-            const dd = document.createElement("dd");
-            dd.className = tw`mt-1 text-sm leading-snug text-text`;
-            dd.textContent = item.value;
-            group.appendChild(dd);
-
-            list.appendChild(group);
-        }
-
-        this.appendChild(list);
+        this.innerHTML = renderLikoMetaList({ items: this.items });
     }
-}
-
-if (!customElements.get("liko-meta-list")) {
-    customElements.define("liko-meta-list", LikoMetaList);
 }
 
 export const LikoMetaListExport = ({ items = [] }) => {

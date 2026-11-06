@@ -1,7 +1,28 @@
 import { tw } from "../../utils/tw.js";
-import "../atoms/LikoFlipCard";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr, escapeHtml } from "../../utils/html.js";
 
-class LikoFlipCardGrid extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoFlipCardGrid = ({ heading, cards = [] }) => {
+    if (cards.length === 0) return "";
+
+    const headingHtml = heading
+        ? `<span class="${tw`block text-center text-2xl font-semibold text-text`}">${escapeHtml(heading)}</span>`
+        : "";
+
+    const items = cards
+        .map(
+            (card) =>
+                `<liko-flip-card${attr("heading", card.heading)}${attr("text", card.text)} class="${tw`h-60 md:h-80`}"></liko-flip-card>`,
+        )
+        .join("");
+
+    return `<div class="${tw`flex flex-col gap-6`}">${headingHtml}<div class="${tw`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4`}">${items}</div></div>`;
+};
+
+export class LikoFlipCardGrid extends ElementBase {
     static get observedAttributes() {
         return ["heading"];
     }
@@ -26,44 +47,11 @@ class LikoFlipCardGrid extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = "";
-
-        if (this.cards.length === 0) return;
-
-        const container = document.createElement("div");
-        container.className = tw`flex flex-col gap-6`;
-
-        // Optional heading
-        const heading = this.getAttribute("heading");
-        if (heading) {
-            const label = document.createElement("span");
-            label.className = tw`block text-center text-2xl font-semibold text-text`;
-            label.textContent = heading;
-            container.appendChild(label);
-        }
-
-        // Responsive grid: 1 column on mobile, 2 on sm, 4 on lg
-        const grid = document.createElement("div");
-        grid.className = tw`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4`;
-
-        for (const card of this.cards) {
-            const el = document.createElement("liko-flip-card");
-            if (card.heading) el.setAttribute("heading", card.heading);
-            if (card.text) el.setAttribute("text", card.text);
-
-            // Height: shorter on mobile, taller on desktop
-            el.className = tw`h-60 md:h-80`;
-
-            grid.appendChild(el);
-        }
-
-        container.appendChild(grid);
-        this.appendChild(container);
+        this.innerHTML = renderLikoFlipCardGrid({
+            heading: this.getAttribute("heading"),
+            cards: this.cards,
+        });
     }
-}
-
-if (!customElements.get("liko-flip-card-grid")) {
-    customElements.define("liko-flip-card-grid", LikoFlipCardGrid);
 }
 
 export const LikoFlipCardGridExport = ({ heading, cards = [] }) => {

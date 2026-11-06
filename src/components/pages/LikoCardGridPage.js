@@ -1,8 +1,17 @@
 import { tw } from "../../utils/tw.js";
-import "../organisms/LikoCardGrid";
-import { LikoButtonExport } from "../atoms/LikoButton";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr, escapeHtml } from "../../utils/html.js";
 
-class LikoCardGridPage extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoCardGridPage = ({ title = "", subtitle = "", description = "", buttonLabel }) => {
+    const button = `<div class="${tw`mb-10`}"><liko-button${attr("label", buttonLabel || "Get Started")} primary size="large" data-page-button></liko-button></div>`;
+
+    return `<div class="${tw`mx-auto max-w-6xl px-6 py-12`}"><h1>${escapeHtml(title)}</h1><h2>${escapeHtml(subtitle)}</h2><p>${escapeHtml(description)}</p>${button}<liko-card-grid></liko-card-grid></div>`;
+};
+
+export class LikoCardGridPage extends ElementBase {
     get cards() {
         return this._cards || [];
     }
@@ -27,48 +36,19 @@ class LikoCardGridPage extends HTMLElement {
     }
 
     render() {
-        const title = this.getAttribute("title") || "";
-        const subtitle = this.getAttribute("subtitle") || "";
-        const description = this.getAttribute("description") || "";
-
-        this.innerHTML = "";
-
-        const wrapper = document.createElement("div");
-        wrapper.className = tw`mx-auto max-w-6xl px-6 py-12`;
-
-        const h1 = document.createElement("h1");
-        h1.textContent = title;
-        wrapper.appendChild(h1);
-
-        const h2 = document.createElement("h2");
-        h2.textContent = subtitle;
-        wrapper.appendChild(h2);
-
-        const p = document.createElement("p");
-        p.textContent = description;
-        wrapper.appendChild(p);
-
-        const btnWrapper = document.createElement("div");
-        btnWrapper.className = tw`mb-10`;
-        const btn = LikoButtonExport({
-            label: this.getAttribute("button-label") || "Get Started",
-            primary: true,
-            size: "large",
-            onClick: () => this.dispatchEvent(new CustomEvent("button-click", { bubbles: true })),
+        this.innerHTML = renderLikoCardGridPage({
+            title: this.getAttribute("title") || "",
+            subtitle: this.getAttribute("subtitle") || "",
+            description: this.getAttribute("description") || "",
+            buttonLabel: this.getAttribute("button-label"),
         });
-        btnWrapper.appendChild(btn);
-        wrapper.appendChild(btnWrapper);
 
-        const grid = document.createElement("liko-card-grid");
-        grid.cards = this.cards;
-        wrapper.appendChild(grid);
+        this.querySelector("[data-page-button]")?.addEventListener("click", () =>
+            this.dispatchEvent(new CustomEvent("button-click", { bubbles: true })),
+        );
 
-        this.appendChild(wrapper);
+        this.querySelector("liko-card-grid").cards = this.cards;
     }
-}
-
-if (!customElements.get("liko-card-grid-page")) {
-    customElements.define("liko-card-grid-page", LikoCardGridPage);
 }
 
 export const LikoCardGridPageExport = ({ title, subtitle, description, buttonLabel, cards = [], onButtonClick }) => {

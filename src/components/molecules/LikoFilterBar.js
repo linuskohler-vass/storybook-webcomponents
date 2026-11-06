@@ -1,7 +1,26 @@
 import { tw } from "../../utils/tw.js";
-import "../atoms/LikoTag";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr, boolAttr, escapeHtml } from "../../utils/html.js";
 
-class LikoFilterBar extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoFilterBar = ({ label, tags = [], activeTags = [] }) => {
+    const labelHtml = label
+        ? `<span class="${tw`text-base font-semibold`}">${escapeHtml(label)}</span>`
+        : "";
+
+    const tagsHtml = tags
+        .map(
+            (tag, i) =>
+                `<liko-tag class="${tw`flex`}"${attr("label", tag)} toggleable${boolAttr("active", activeTags.includes(tag))} data-index="${i}"></liko-tag>`,
+        )
+        .join("");
+
+    return `<div class="${tw`mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4`}">${labelHtml}<div class="${tw`flex flex-wrap items-center gap-2`}">${tagsHtml}</div></div>`;
+};
+
+export class LikoFilterBar extends ElementBase {
     static get observedAttributes() {
         return ["label"];
     }
@@ -35,31 +54,13 @@ class LikoFilterBar extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = "";
+        this.innerHTML = renderLikoFilterBar({
+            label: this.getAttribute("label"),
+            tags: this.tags,
+            activeTags: this.activeTags,
+        });
 
-        const label = this.getAttribute("label");
-
-        const wrapper = document.createElement("div");
-        wrapper.className = tw`mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4`;
-
-        if (label) {
-            const labelEl = document.createElement("span");
-            labelEl.className = tw`text-base font-semibold`;
-            labelEl.textContent = label;
-            wrapper.appendChild(labelEl);
-        }
-
-        const tagsWrapper = document.createElement("div");
-        tagsWrapper.className = tw`flex flex-wrap items-center gap-2`;
-
-        for (const tag of this.tags) {
-            const el = document.createElement("liko-tag");
-            el.className = tw`flex`;
-            el.setAttribute("label", tag);
-            el.setAttribute("toggleable", "");
-            if (this.activeTags.includes(tag)) {
-                el.setAttribute("active", "");
-            }
+        for (const el of this.querySelectorAll("liko-tag")) {
             el.addEventListener("toggle", (e) => {
                 const { label, active } = e.detail;
                 if (active) {
@@ -74,16 +75,8 @@ class LikoFilterBar extends HTMLElement {
                     }),
                 );
             });
-            tagsWrapper.appendChild(el);
         }
-
-        wrapper.appendChild(tagsWrapper);
-        this.appendChild(wrapper);
     }
-}
-
-if (!customElements.get("liko-filter-bar")) {
-    customElements.define("liko-filter-bar", LikoFilterBar);
 }
 
 export const LikoFilterBarExport = ({ label, tags = [], activeTags = [], onFilterChange }) => {

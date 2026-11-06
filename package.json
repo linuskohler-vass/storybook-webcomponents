@@ -11,10 +11,14 @@
   ],
   "exports": {
     ".": "./dist/index.js",
+    "./register": "./dist/register.js",
     "./components/*": "./dist/*.js",
     "./styles.css": "./dist/styles.css"
   },
-  "sideEffects": true,
+  "sideEffects": [
+    "./dist/register.js",
+    "./dist/styles.css"
+  ],
   "scripts": {
     "start": "npm run storybook",
     "test": "vitest run --project storybook",

@@ -1,9 +1,33 @@
 import { tw } from "../../utils/tw.js";
-import "../molecules/LikoMetaList";
-import "../molecules/LikoButtonList";
-import "../organisms/LikoCardStack";
+import { ElementBase } from "../../utils/element-base.js";
+import { escapeHtml } from "../../utils/html.js";
 
-class LikoProjectDetail extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoProjectDetail = ({
+    title = "",
+    subtitle = "",
+    description = "",
+    buttons = [],
+    cards = [],
+}) => {
+    const titleHtml = title ? `<h1>${escapeHtml(title)}</h1>` : "";
+    const subtitleHtml = subtitle ? `<h2>${escapeHtml(subtitle)}</h2>` : "";
+    const descriptionHtml = description ? `<p>${escapeHtml(description)}</p>` : "";
+
+    const buttonListHtml =
+        buttons.length > 0 ? `<liko-button-list class="${tw`mb-10`}" data-button-list></liko-button-list>` : "";
+    const stackHtml =
+        cards.length > 0 ? "<liko-card-stack orientation=\"landscape\" data-stack></liko-card-stack>" : "";
+
+    const aside = `<aside class="${tw`shrink-0 lg:w-64`}"><liko-meta-list data-meta-list></liko-meta-list></aside>`;
+    const main = `<div class="${tw`flex min-w-0 flex-1 flex-col`}">${titleHtml}${subtitleHtml}${descriptionHtml}${buttonListHtml}${stackHtml}</div>`;
+
+    return `<div class="${tw`mx-auto max-w-6xl px-6 py-12`}"><div class="${tw`flex flex-col gap-10 lg:flex-row lg:gap-16`}">${aside}${main}</div></div>`;
+};
+
+export class LikoProjectDetail extends ElementBase {
     static get observedAttributes() {
         return ["title", "subtitle", "description"];
     }
@@ -46,72 +70,22 @@ class LikoProjectDetail extends HTMLElement {
     }
 
     render() {
-        const title = this.getAttribute("title") || "";
-        const subtitle = this.getAttribute("subtitle") || "";
-        const description = this.getAttribute("description") || "";
+        this.innerHTML = renderLikoProjectDetail({
+            title: this.getAttribute("title") || "",
+            subtitle: this.getAttribute("subtitle") || "",
+            description: this.getAttribute("description") || "",
+            buttons: this.buttons,
+            cards: this.cards,
+        });
 
-        this.innerHTML = "";
+        this.querySelector("[data-meta-list]").items = this.metaItems;
 
-        const wrapper = document.createElement("div");
-        wrapper.className = tw`mx-auto max-w-6xl px-6 py-12`;
+        const btnList = this.querySelector("[data-button-list]");
+        if (btnList) btnList.buttons = this.buttons;
 
-        const layout = document.createElement("div");
-        layout.className = tw`flex flex-col gap-10 lg:flex-row lg:gap-16`;
-
-        // --- Left side: Meta list ---
-        const aside = document.createElement("aside");
-        aside.className = tw`shrink-0 lg:w-64`;
-
-        const metaList = document.createElement("liko-meta-list");
-        metaList.items = this.metaItems;
-        aside.appendChild(metaList);
-
-        layout.appendChild(aside);
-
-        // --- Right side: Content + Card stack ---
-        const main = document.createElement("div");
-        main.className = tw`flex min-w-0 flex-1 flex-col`;
-
-        if (title) {
-            const h1 = document.createElement("h1");
-            h1.textContent = title;
-            main.appendChild(h1);
-        }
-
-        if (subtitle) {
-            const h2 = document.createElement("h2");
-            h2.textContent = subtitle;
-            main.appendChild(h2);
-        }
-
-        if (description) {
-            const p = document.createElement("p");
-            p.textContent = description;
-            main.appendChild(p);
-        }
-
-        if (this.buttons.length > 0) {
-            const btnList = document.createElement("liko-button-list");
-            btnList.className = tw`mb-10`;
-            btnList.buttons = this.buttons;
-            main.appendChild(btnList);
-        }
-
-        if (this.cards.length > 0) {
-            const stack = document.createElement("liko-card-stack");
-            stack.setAttribute("orientation", "landscape");
-            stack.cards = this.cards;
-            main.appendChild(stack);
-        }
-
-        layout.appendChild(main);
-        wrapper.appendChild(layout);
-        this.appendChild(wrapper);
+        const stack = this.querySelector("[data-stack]");
+        if (stack) stack.cards = this.cards;
     }
-}
-
-if (!customElements.get("liko-project-detail")) {
-    customElements.define("liko-project-detail", LikoProjectDetail);
 }
 
 export const LikoProjectDetailExport = ({ title, subtitle, description, buttons = [], metaItems = [], cards = [] }) => {

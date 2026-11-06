@@ -1,6 +1,21 @@
 import { tw } from "../../utils/tw.js";
+import { ElementBase } from "../../utils/element-base.js";
+import { escapeHtml } from "../../utils/html.js";
 
-class LikoTag extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoTag = ({ label, toggleable, active }) => {
+    const baseClasses = tw`inline-block rounded-lg text-xs leading-none font-semibold`;
+    const modeClasses = active ? tw`bg-foreground-60 text-white` : tw`bg-background-80 text-text`;
+    const interactiveClasses = toggleable ? tw`slide-hover cursor-pointer select-none` : "";
+    const hoverBg = active ? "var(--color-foreground-80)" : "var(--color-background-60)";
+    const style = toggleable ? ` style="--slide-hover-bg: ${hoverBg};"` : "";
+
+    return `<span class="${baseClasses} ${modeClasses} ${interactiveClasses} px-3 py-1.5"${style}>${escapeHtml(label)}</span>`;
+};
+
+export class LikoTag extends ElementBase {
     static get observedAttributes() {
         return ["label", "toggleable", "active"];
     }
@@ -18,28 +33,15 @@ class LikoTag extends HTMLElement {
     render() {
         const label = this.getAttribute("label");
         const toggleable = this.hasAttribute("toggleable");
-        const active = this.hasAttribute("active");
 
-        const baseClasses = tw`inline-block rounded-lg text-xs leading-none font-semibold`;
-
-        const modeClasses = active ? tw`bg-foreground-60 text-white` : tw`bg-background-80 text-text`;
-
-        const interactiveClasses = toggleable ? tw`slide-hover cursor-pointer select-none` : "";
-
-        const hoverBg = active ? "var(--color-foreground-80)" : "var(--color-background-60)";
-
-        this.innerHTML = "";
-
-        const span = document.createElement("span");
-        span.className = tw`${baseClasses} ${modeClasses} ${interactiveClasses} px-3 py-1.5`;
-        if (toggleable) {
-            span.style.setProperty("--slide-hover-bg", hoverBg);
-        }
-
-        span.textContent = label;
+        this.innerHTML = renderLikoTag({
+            label,
+            toggleable,
+            active: this.hasAttribute("active"),
+        });
 
         if (toggleable) {
-            span.addEventListener("click", () => {
+            this.querySelector("span").addEventListener("click", () => {
                 if (this.hasAttribute("active")) {
                     this.removeAttribute("active");
                 } else {
@@ -53,13 +55,7 @@ class LikoTag extends HTMLElement {
                 );
             });
         }
-
-        this.appendChild(span);
     }
-}
-
-if (!customElements.get("liko-tag")) {
-    customElements.define("liko-tag", LikoTag);
 }
 
 export const LikoTagExport = ({ label, toggleable, active, onToggle }) => {

@@ -1,41 +1,10 @@
 import { tw } from "../../utils/tw.js";
-import "../molecules/LikoHeader";
+import { ElementBase } from "../../utils/element-base.js";
 
-class LikoPage extends HTMLElement {
-    get user() {
-        return this._user;
-    }
-
-    set user(value) {
-        this._user = value;
-        this.update();
-    }
-
-    connectedCallback() {
-        this.render();
-    }
-
-    update() {
-        const header = this.querySelector("liko-header");
-        if (header) {
-            header.user = this._user;
-        } else {
-            this.render();
-        }
-    }
-
-    render() {
-        this.innerHTML = "";
-        const article = document.createElement("article");
-
-        const header = document.createElement("liko-header");
-        header.user = this._user;
-        article.appendChild(header);
-
-        const section = document.createElement("section");
-        section.className = tw`mx-auto max-w-[600px] px-5 py-12 text-sm leading-6 text-[#333]`;
-
-        section.innerHTML = `
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoPage = () => `<article><liko-header></liko-header><section class="${tw`mx-auto max-w-[600px] px-5 py-12 text-sm leading-6 text-[#333]`}">
     <h2>Pages in Storybook</h2>
     <p class="${tw`my-4`}">
       We recommend building UIs with a
@@ -80,15 +49,35 @@ class LikoPage extends HTMLElement {
       </svg>
       Viewports addon in the toolbar
     </div>
-  `;
+  </section></article>`;
 
-        article.appendChild(section);
-        this.appendChild(article);
+export class LikoPage extends ElementBase {
+    get user() {
+        return this._user;
     }
-}
 
-if (!customElements.get("liko-page")) {
-    customElements.define("liko-page", LikoPage);
+    set user(value) {
+        this._user = value;
+        this.update();
+    }
+
+    connectedCallback() {
+        this.render();
+    }
+
+    update() {
+        const header = this.querySelector("liko-header");
+        if (header) {
+            header.user = this._user;
+        } else {
+            this.render();
+        }
+    }
+
+    render() {
+        this.innerHTML = renderLikoPage();
+        this.querySelector("liko-header").user = this._user;
+    }
 }
 
 export const LikoPageExport = ({ user, onLogin, onLogout, onCreateAccount }) => {

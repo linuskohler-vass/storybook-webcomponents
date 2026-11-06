@@ -1,8 +1,44 @@
 import { tw } from "../../utils/tw.js";
-import { createIcon } from "../../utils/icons.js";
-import "../atoms/LikoStackCard";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr } from "../../utils/html.js";
+import { iconSvg } from "../../utils/icons.js";
 
-class LikoCardStack extends HTMLElement {
+const renderStackNavButton = (direction) => {
+    const iconName = direction === "prev" ? "chevron-left" : "chevron-right";
+    const ariaLabel = direction === "prev" ? "Previous card" : "Next card";
+    return `<button data-nav="${direction}" aria-label="${ariaLabel}" class="${tw`slide-hover flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-border bg-background-100 p-0 text-foreground-80 shadow-sm`}" style="--slide-hover-bg: var(--color-background-60);">${iconSvg(iconName)}</button>`;
+};
+
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoCardStack = ({ cards = [], orientation = "portrait" }) => {
+    if (cards.length === 0) return "";
+
+    const isLandscape = orientation === "landscape";
+    const maxWidth = isLandscape ? "min(100%, 800px)" : "min(100%, 360px)";
+    const aspectRatio = isLandscape ? "4 / 3" : "3 / 4";
+
+    const cardEls = cards
+        .map((card) => {
+            const cardAttrs = `${attr("image-src", card.imageSrc)}${attr("image-alt", card.imageAlt)}${attr("caption", card.caption)}${attr("text", card.text)}${attr("text-title", card.textTitle)}${attr("orientation", orientation)}`;
+            const style =
+                "position: absolute; inset: 0; transition: transform 0.4s ease, opacity 0.4s ease; transform-origin: center bottom; will-change: transform, opacity;";
+            return `<liko-stack-card${cardAttrs} style="${style}"></liko-stack-card>`;
+        })
+        .join("");
+
+    const dots = cards
+        .map(
+            (_, i) =>
+                `<button data-dot="${i}" aria-label="Go to card ${i + 1}" class="${tw`h-2 w-2 rounded-full border-0 p-0 transition-colors`}" style="cursor: pointer;"></button>`,
+        )
+        .join("");
+
+    return `<div class="${tw`flex flex-col items-center gap-6`}"><div data-stack-container class="${tw`relative w-full`}" style="max-width: ${maxWidth}; aspect-ratio: ${aspectRatio};">${cardEls}</div><div class="${tw`flex items-center gap-4`}">${renderStackNavButton("prev")}<div class="${tw`flex items-center gap-1.5`}">${dots}</div>${renderStackNavButton("next")}</div></div>`;
+};
+
+export class LikoCardStack extends ElementBase {
     static get observedAttributes() {
         return ["orientation"];
     }
@@ -47,95 +83,29 @@ class LikoCardStack extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = "";
+        this.innerHTML = renderLikoCardStack({
+            cards: this.cards,
+            orientation: this.getAttribute("orientation") || "portrait",
+        });
+
         this._cleanupSwipe();
 
         if (this.cards.length === 0) return;
 
-        const wrapper = document.createElement("div");
-        wrapper.className = tw`flex flex-col items-center gap-6`;
+        this._stackContainer = this.querySelector("[data-stack-container]");
+        this._cardEls = [...this.querySelectorAll("liko-stack-card")];
+        this._dots = [...this.querySelectorAll("[data-dot]")];
+        this._prevBtn = this.querySelector("[data-nav=\"prev\"]");
+        this._nextBtn = this.querySelector("[data-nav=\"next\"]");
 
-        // --- Stack area ---
-        const stackContainer = document.createElement("div");
-        stackContainer.className = tw`relative w-full`;
-        const orientation = this.getAttribute("orientation") || "portrait";
-        const isLandscape = orientation === "landscape";
-        stackContainer.style.maxWidth = isLandscape ? "min(100%, 800px)" : "min(100%, 360px)";
-        stackContainer.style.aspectRatio = isLandscape ? "4 / 3" : "3 / 4";
-
-        this._stackContainer = stackContainer;
-
-        // Create card elements
-        this._cardEls = [];
-        for (let i = 0; i < this.cards.length; i++) {
-            const card = this.cards[i];
-            const el = document.createElement("liko-stack-card");
-            if (card.imageSrc) el.setAttribute("image-src", card.imageSrc);
-            if (card.imageAlt) el.setAttribute("image-alt", card.imageAlt);
-            if (card.caption) el.setAttribute("caption", card.caption);
-            if (card.text) el.setAttribute("text", card.text);
-            if (card.textTitle) el.setAttribute("text-title", card.textTitle);
-            el.setAttribute("orientation", orientation);
-
-            el.style.position = "absolute";
-            el.style.inset = "0";
-            el.style.transition = "transform 0.4s ease, opacity 0.4s ease";
-            el.style.transformOrigin = "center bottom";
-            el.style.willChange = "transform, opacity";
-
-            stackContainer.appendChild(el);
-            this._cardEls.push(el);
+        this._prevBtn.addEventListener("click", () => this.goPrev());
+        this._nextBtn.addEventListener("click", () => this.goNext());
+        for (const dot of this._dots) {
+            dot.addEventListener("click", () => this.goTo(Number(dot.dataset.dot)));
         }
 
-        wrapper.appendChild(stackContainer);
-
-        // --- Navigation ---
-        const nav = document.createElement("div");
-        nav.className = tw`flex items-center gap-4`;
-
-        this._prevBtn = this._createNavButton("prev");
-        this._nextBtn = this._createNavButton("next");
-
-        // Dot indicators
-        const dots = document.createElement("div");
-        dots.className = tw`flex items-center gap-1.5`;
-        this._dots = [];
-        for (let i = 0; i < this.cards.length; i++) {
-            const dot = document.createElement("button");
-            dot.className = tw`h-2 w-2 rounded-full border-0 p-0 transition-colors`;
-            dot.style.cursor = "pointer";
-            dot.setAttribute("aria-label", `Go to card ${i + 1}`);
-            dot.addEventListener("click", () => this.goTo(i));
-            dots.appendChild(dot);
-            this._dots.push(dot);
-        }
-
-        nav.appendChild(this._prevBtn);
-        nav.appendChild(dots);
-        nav.appendChild(this._nextBtn);
-        wrapper.appendChild(nav);
-
-        this.appendChild(wrapper);
-
-        this._setupSwipe(stackContainer);
+        this._setupSwipe(this._stackContainer);
         this._updateStack();
-    }
-
-    _createNavButton(direction) {
-        const btn = document.createElement("button");
-        btn.className = tw`slide-hover flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-2 border-border bg-background-100 p-0 text-foreground-80 shadow-sm`;
-        btn.style.setProperty("--slide-hover-bg", "var(--color-background-60)");
-        btn.setAttribute("aria-label", direction === "prev" ? "Previous card" : "Next card");
-
-        const iconName = direction === "prev" ? "chevron-left" : "chevron-right";
-        btn.appendChild(createIcon(iconName));
-
-        btn.addEventListener("click", () => {
-            if (direction === "prev") this.goPrev();
-            else this.goNext();
-        });
-
-        return btn;
     }
 
     _updateStack() {
@@ -272,10 +242,6 @@ class LikoCardStack extends HTMLElement {
             this._stackContainer.removeEventListener("mouseup", this._onMouseUp);
         }
     }
-}
-
-if (!customElements.get("liko-card-stack")) {
-    customElements.define("liko-card-stack", LikoCardStack);
 }
 
 export const LikoCardStackExport = ({ cards = [], orientation, onCardChange }) => {

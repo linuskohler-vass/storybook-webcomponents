@@ -1,5 +1,6 @@
 /** @type { import('@storybook/web-components-vite').Preview } */
 import '@/tailwind.css';
+import '@/register.js';
 
 const preview = {
   parameters: {

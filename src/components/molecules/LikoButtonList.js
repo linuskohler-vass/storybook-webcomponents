@@ -1,7 +1,31 @@
 import { tw } from "../../utils/tw.js";
-import { LikoButtonExport } from "../atoms/LikoButton";
+import { ElementBase } from "../../utils/element-base.js";
+import { likoButtonTag } from "../atoms/LikoButton";
 
-class LikoButtonList extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoButtonList = ({ buttons = [] }) => {
+    if (buttons.length === 0) return "";
+
+    const items = buttons
+        .map((btn, i) =>
+            likoButtonTag({
+                label: btn.label,
+                primary: btn.primary || false,
+                size: btn.size || "medium",
+                backgroundColor: btn.backgroundColor || null,
+                href: btn.href || null,
+                target: btn.target || null,
+                extra: ` data-index="${i}"`,
+            }),
+        )
+        .join("");
+
+    return `<div class="${tw`flex flex-wrap items-center gap-3`}">${items}</div>`;
+};
+
+export class LikoButtonList extends ElementBase {
     get buttons() {
         return this._buttons || [];
     }
@@ -16,32 +40,13 @@ class LikoButtonList extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = "";
+        this.innerHTML = renderLikoButtonList({ buttons: this.buttons });
 
-        if (this.buttons.length === 0) return;
-
-        const wrapper = document.createElement("div");
-        wrapper.className = tw`flex flex-wrap items-center gap-3`;
-
-        for (const btnConfig of this.buttons) {
-            const btn = LikoButtonExport({
-                label: btnConfig.label,
-                primary: btnConfig.primary || false,
-                size: btnConfig.size || "medium",
-                backgroundColor: btnConfig.backgroundColor || null,
-                onClick: btnConfig.onClick || null,
-                href: btnConfig.href || null,
-                target: btnConfig.target || null,
-            });
-            wrapper.appendChild(btn);
+        for (const el of this.querySelectorAll("liko-button")) {
+            const onClick = this.buttons[Number(el.dataset.index)]?.onClick;
+            if (onClick) el.addEventListener("click", onClick);
         }
-
-        this.appendChild(wrapper);
     }
-}
-
-if (!customElements.get("liko-button-list")) {
-    customElements.define("liko-button-list", LikoButtonList);
 }
 
 export const LikoButtonListExport = ({ buttons = [] }) => {

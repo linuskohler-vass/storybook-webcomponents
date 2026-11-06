@@ -1,9 +1,49 @@
 import { tw } from "../../utils/tw.js";
-import "../organisms/LikoCardStack";
-import "../organisms/LikoCardFilter";
-import "../organisms/LikoFlipCardGrid";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr, escapeHtml } from "../../utils/html.js";
 
-class LikoHomePage extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoHomePage = ({
+    title = "",
+    subtitle = "",
+    description = "",
+    description2 = "",
+    filterLabel = "",
+    filterHeading = "",
+    bottomHeading = "",
+    bottomDescription = "",
+    stackCards = [],
+    filterCards = [],
+    flipCards = [],
+}) => {
+    const textCol = `<div class="${tw`flex-1`}">${title ? `<h1>${escapeHtml(title)}</h1>` : ""}${subtitle ? `<h2>${escapeHtml(subtitle)}</h2>` : ""}${description ? `<p>${escapeHtml(description)}</p>` : ""}${description2 ? `<p>${escapeHtml(description2)}</p>` : ""}</div>`;
+
+    const stackCol =
+        stackCards.length > 0
+            ? `<div class="${tw`w-full flex-1`}"><liko-card-stack data-stack></liko-card-stack></div>`
+            : "";
+
+    const hero = `<div class="${tw`flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16`}">${textCol}${stackCol}</div>`;
+
+    const filterSection =
+        filterCards.length > 0
+            ? `<section class="${tw`mt-16 xl:mt-24`}">${filterHeading ? `<h2>${escapeHtml(filterHeading)}</h2>` : ""}<liko-card-filter${attr("filter-label", filterLabel)} data-filter></liko-card-filter></section>`
+            : "";
+
+    let bottomSection = "";
+    if (bottomHeading || flipCards.length > 0) {
+        const headingHtml = bottomHeading ? `<h2>${escapeHtml(bottomHeading)}</h2>` : "";
+        const descriptionHtml = bottomDescription ? `<p>${escapeHtml(bottomDescription)}</p>` : "";
+        const gridHtml = flipCards.length > 0 ? "<liko-flip-card-grid data-flip-grid></liko-flip-card-grid>" : "";
+        bottomSection = `<section class="${tw`mt-16 xl:mt-24`}">${headingHtml}${descriptionHtml}${gridHtml}</section>`;
+    }
+
+    return `<div class="${tw`mx-auto max-w-6xl px-6 py-12`}">${hero}${filterSection}${bottomSection}</div>`;
+};
+
+export class LikoHomePage extends ElementBase {
     static get observedAttributes() {
         return [
             "title",
@@ -63,117 +103,29 @@ class LikoHomePage extends HTMLElement {
     }
 
     render() {
-        const title = this.getAttribute("title") || "";
-        const subtitle = this.getAttribute("subtitle") || "";
-        const description = this.getAttribute("description") || "";
-        const description2 = this.getAttribute("description2") || "";
-        const filterLabel = this.getAttribute("filter-label") || "";
-        const filterHeading = this.getAttribute("filter-heading") || "";
-        const bottomHeading = this.getAttribute("bottom-heading") || "";
-        const bottomDescription = this.getAttribute("bottom-description") || "";
+        this.innerHTML = renderLikoHomePage({
+            title: this.getAttribute("title") || "",
+            subtitle: this.getAttribute("subtitle") || "",
+            description: this.getAttribute("description") || "",
+            description2: this.getAttribute("description2") || "",
+            filterLabel: this.getAttribute("filter-label") || "",
+            filterHeading: this.getAttribute("filter-heading") || "",
+            bottomHeading: this.getAttribute("bottom-heading") || "",
+            bottomDescription: this.getAttribute("bottom-description") || "",
+            stackCards: this.stackCards,
+            filterCards: this.filterCards,
+            flipCards: this.flipCards,
+        });
 
-        this.innerHTML = "";
+        const stack = this.querySelector("[data-stack]");
+        if (stack) stack.cards = this.stackCards;
 
-        const wrapper = document.createElement("div");
-        wrapper.className = tw`mx-auto max-w-6xl px-6 py-12`;
+        const filter = this.querySelector("[data-filter]");
+        if (filter) filter.cards = this.filterCards;
 
-        // --- Hero row: text left, card stack right ---
-        const hero = document.createElement("div");
-        hero.className = tw`flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16`;
-
-        const textCol = document.createElement("div");
-        textCol.className = tw`flex-1`;
-
-        if (title) {
-            const h1 = document.createElement("h1");
-            h1.textContent = title;
-            textCol.appendChild(h1);
-        }
-
-        if (subtitle) {
-            const h2 = document.createElement("h2");
-            h2.textContent = subtitle;
-            textCol.appendChild(h2);
-        }
-
-        if (description) {
-            const p = document.createElement("p");
-            p.textContent = description;
-            textCol.appendChild(p);
-        }
-
-        if (description2) {
-            const p = document.createElement("p");
-            p.textContent = description2;
-            textCol.appendChild(p);
-        }
-
-        hero.appendChild(textCol);
-
-        if (this.stackCards.length > 0) {
-            const stackCol = document.createElement("div");
-            stackCol.className = tw`w-full flex-1`;
-
-            const stack = document.createElement("liko-card-stack");
-            stack.cards = this.stackCards;
-            stackCol.appendChild(stack);
-
-            hero.appendChild(stackCol);
-        }
-
-        wrapper.appendChild(hero);
-
-        // --- Filter row ---
-        if (this.filterCards.length > 0) {
-            const filterSection = document.createElement("section");
-            filterSection.className = tw`mt-16 xl:mt-24`;
-
-            if (filterHeading) {
-                const h2 = document.createElement("h2");
-                h2.textContent = filterHeading;
-                filterSection.appendChild(h2);
-            }
-
-            const filter = document.createElement("liko-card-filter");
-            if (filterLabel) filter.setAttribute("filter-label", filterLabel);
-            filter.cards = this.filterCards;
-            filterSection.appendChild(filter);
-
-            wrapper.appendChild(filterSection);
-        }
-
-        // --- Bottom section: heading, text, flip card grid ---
-        if (bottomHeading || this.flipCards.length > 0) {
-            const bottomSection = document.createElement("section");
-            bottomSection.className = tw`mt-16 xl:mt-24`;
-
-            if (bottomHeading) {
-                const h2 = document.createElement("h2");
-                h2.textContent = bottomHeading;
-                bottomSection.appendChild(h2);
-            }
-
-            if (bottomDescription) {
-                const p = document.createElement("p");
-                p.textContent = bottomDescription;
-                bottomSection.appendChild(p);
-            }
-
-            if (this.flipCards.length > 0) {
-                const grid = document.createElement("liko-flip-card-grid");
-                grid.cards = this.flipCards;
-                bottomSection.appendChild(grid);
-            }
-
-            wrapper.appendChild(bottomSection);
-        }
-
-        this.appendChild(wrapper);
+        const flipGrid = this.querySelector("[data-flip-grid]");
+        if (flipGrid) flipGrid.cards = this.flipCards;
     }
-}
-
-if (!customElements.get("liko-home-page")) {
-    customElements.define("liko-home-page", LikoHomePage);
 }
 
 export const LikoHomePageExport = ({

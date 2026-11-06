@@ -29,9 +29,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: resolve(__dirname, 'src/index.js'),
+        register: resolve(__dirname, 'src/register.js'),
         ...componentFiles,
         styles: resolve(__dirname, 'src/tailwind.css'),
       },
+      preserveEntrySignatures: 'strict',
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: 'assets/[name]-[hash].js',

@@ -48,8 +48,9 @@ npm run build
 ```
 
 This places the complete browser distribution in `/dist`:
-- `index.js` registers all components
-- Individual component entry points such as `likocard.js`
+- `register.js` registers all custom elements (browser entrypoint)
+- `index.js` exports the pure render functions, element classes, and DOM factories — no browser globals are evaluated on import, so it is safe to import in SSR environments (e.g. Next.js)
+- Individual component entry points such as `likocard.js` (export the element class, render function, and factory — they do not self-register)
 - The required Tailwind styles in a minified `styles.css` (only with the styles in use)
 - Shared JavaScript chunks, fonts, and other assets
 
@@ -71,16 +72,22 @@ The command creates the `artifacts/` directory, runs the Vite production build, 
 npm install /path/to/artifacts/liko-webcomponents-1.0.0.tgz
 ```
 
-Import all components and the stylesheet:
+Register all components and import the stylesheet:
 ```javascript
-import 'liko-webcomponents';
+import 'liko-webcomponents/register';
 import 'liko-webcomponents/styles.css';
 ```
 
-Alternatively, import a single component entry point:
+The main entry point is SSR-safe — it can be imported in server-side code (e.g. a Next.js app) without a DOM. It exports the pure `renderLiko*` functions, which return the component markup as an HTML string, plus the element classes and browser DOM factories:
 ```javascript
-import 'liko-webcomponents/components/likocard';
-import 'liko-webcomponents/styles.css';
+import { renderLikoCard } from 'liko-webcomponents';
+
+const html = `<liko-card heading="Hello">${renderLikoCard({ heading: 'Hello' })}</liko-card>`;
+```
+
+Alternatively, import a single component entry point (exports its class, render function, and factory — registration still happens via `liko-webcomponents/register`):
+```javascript
+import { LikoCardExport } from 'liko-webcomponents/components/likocard';
 ```
 
 ## Static Hosting / CDN
@@ -93,7 +100,7 @@ This runs the same Vite build as `npm run build` and copies `dist/` to `/cdn/<ve
 
 ```html
 <link rel="stylesheet" href="/components/1.0.0/styles.css">
-<script type="module" src="/components/1.0.0/index.js"></script>
+<script type="module" src="/components/1.0.0/register.js"></script>
 ```
 
 Never overwrite an already published version path; consumers upgrade by bumping the version in the URL.
@@ -109,25 +116,30 @@ Open `http://localhost:8080/integration-test.html` — it reads the version from
 ## Instructions for Creating New Components
 
 ### 1. Create the Component File
-Create a new component file in `/src/components/` (e.g., `MyComponent.js`):
+Create a new component file in `/src/components/` (e.g., `MyComponent.js`). Each component file contains three parts: a **pure render function**, the **element class**, and a **DOM factory**:
 
 ```javascript
-class MyComponent extends HTMLElement {
+import { ElementBase } from '../utils/element-base.js';
+import { escapeHtml } from '../utils/html.js';
+
+// Pure render function — no browser globals, safe to run on the server.
+export const renderMyComponent = ({ label }) => `
+  <div class="p-4 bg-blue-500 text-white">
+    ${escapeHtml(label)}
+  </div>
+`;
+
+// The element class extends ElementBase so the module stays importable
+// without a DOM (ElementBase falls back to a no-op class during SSR).
+export class MyComponent extends ElementBase {
   connectedCallback() {
     this.render();
   }
 
   render() {
-    this.innerHTML = `
-      <div class="p-4 bg-blue-500 text-white">
-        My Component
-      </div>
-    `;
+    this.innerHTML = renderMyComponent({ label: this.getAttribute('label') });
+    // Attach event listeners here, after the markup is mounted.
   }
-}
-
-if (!customElements.get('my-component')) {
-  customElements.define('my-component', MyComponent);
 }
 
 export const MyComponentExport = (props) => {
@@ -137,7 +149,12 @@ export const MyComponentExport = (props) => {
 };
 ```
 
-### 2. Create a Story
+Do **not** call `customElements.define` in the component file.
+
+### 2. Register the Component
+Add the element to `src/register.js` (import the class and add it to the `ELEMENTS` map). Registration lives only in this browser entrypoint.
+
+### 3. Create a Story
 Create a corresponding story file in `/stories/` (e.g., `MyComponent.stories.js`):
 
 ```javascript
@@ -151,11 +168,11 @@ export default {
 export const Default = {};
 ```
 
-### 3. Build Process
+### 4. Build Process
 The Vite build configuration automatically discovers all `.js` files in `/src/components/` and creates individual bundles for each component. No additional configuration is needed.
 
-### 4. Using Built Components
-After building, use the components in your HTML:
+### 5. Using Built Components
+After building, register and use the components in your HTML:
 
 ```html
 <!DOCTYPE html>
@@ -165,7 +182,7 @@ After building, use the components in your HTML:
 </head>
 <body>
   <my-component></my-component>
-  <script type="module" src="./dist/mycomponent.js"></script>
+  <script type="module" src="./dist/register.js"></script>
 </body>
 </html>
 ```
@@ -175,3 +192,7 @@ After building, use the components in your HTML:
 - **Web Components** are defined using native Custom Elements API
 - **Component naming**: Use PascalCase for class names (e.g., `LikoButton`) and kebab-case for custom element tags (e.g., `liko-button`)
 - **Styling**: Apply Tailwind utility classes directly in the component's render method or template
+- **SSR readiness**: Every component must expose a pure `renderLiko*` function that returns its markup as an HTML string and uses **no browser globals** (`document`, `window`, `customElements`, …). The element class calls it and only wires up events/properties afterwards.
+- **No browser globals at module top level**: element classes must extend `ElementBase` (falls back to a no-op class without a DOM) so every module stays importable in SSR environments.
+- **No self-registration**: never call `customElements.define` in a component file. New elements are registered exclusively in `src/register.js`.
+- **Escape interpolated content**: use `escapeHtml`/`attr`/`boolAttr` from `src/utils/html.js` when interpolating values into markup.

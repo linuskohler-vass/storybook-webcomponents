@@ -3,6 +3,8 @@
  * @see https://lucide.dev/icons
  */
 
+import { escapeHtml } from "./html.js";
+
 const ICON_DEFAULTS = {
     width: "18",
     height: "18",
@@ -22,32 +24,30 @@ const ICONS = {
 };
 
 /**
- * Creates an SVG element for the given Lucide icon name.
+ * Returns the SVG markup for the given Lucide icon name.
  * @param {string} name - One of the keys in ICONS.
  * @param {object} [overrides] - Optional attribute overrides (e.g. { width: "24" }).
- * @returns {SVGSVGElement}
+ * @returns {string} SVG markup
  */
-export const createIcon = (name, overrides = {}) => {
+export const iconSvg = (name, overrides = {}) => {
     const paths = ICONS[name];
     if (!paths) throw new Error(`Unknown icon: ${name}`);
 
     const opts = { ...ICON_DEFAULTS, ...overrides };
 
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("width", opts.width);
-    svg.setAttribute("height", opts.height);
-    svg.setAttribute("viewBox", opts.viewBox);
-    svg.setAttribute("fill", opts.fill);
-    svg.setAttribute("stroke", opts.stroke);
-    svg.setAttribute("stroke-width", opts.strokeWidth);
-    svg.setAttribute("stroke-linecap", opts.strokeLinecap);
-    svg.setAttribute("stroke-linejoin", opts.strokeLinejoin);
+    const attrs = [
+        ["width", opts.width],
+        ["height", opts.height],
+        ["viewBox", opts.viewBox],
+        ["fill", opts.fill],
+        ["stroke", opts.stroke],
+        ["stroke-width", opts.strokeWidth],
+        ["stroke-linecap", opts.strokeLinecap],
+        ["stroke-linejoin", opts.strokeLinejoin],
+    ]
+        .map(([key, value]) => `${key}="${escapeHtml(value)}"`)
+        .join(" ");
 
-    for (const d of paths) {
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d", d);
-        svg.appendChild(path);
-    }
-
-    return svg;
+    const body = paths.map((d) => `<path d="${d}"/>`).join("");
+    return `<svg ${attrs}>${body}</svg>`;
 };

@@ -1,6 +1,38 @@
 import { tw } from "../../utils/tw.js";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr, boolAttr, escapeHtml } from "../../utils/html.js";
 
-class LikoButton extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoButton = ({ primary, backgroundColor = null, size, label, href, target }) => {
+    const baseClasses = tw`inline-block cursor-pointer rounded-3xl border-0 leading-none font-bold no-underline`;
+
+    let sizeClasses;
+    switch (size) {
+        case "small":
+            sizeClasses = tw`px-4 py-2.5 text-xs`;
+            break;
+        case "large":
+            sizeClasses = tw`px-6 py-3 text-base`;
+            break;
+        default: // medium
+            sizeClasses = tw`px-5 py-[11px] text-sm`;
+    }
+
+    const modeClasses = primary ? tw`bg-foreground-80 text-white` : tw`bg-background-80 text-text`;
+    const hoverBg = primary ? "var(--color-foreground-100)" : "var(--color-background-60)";
+    const bgStyle = backgroundColor ? ` background-color: ${escapeHtml(backgroundColor)};` : "";
+    const common = `class="${baseClasses} ${sizeClasses} ${modeClasses} slide-hover" style="--slide-hover-bg: ${hoverBg};${bgStyle}"`;
+
+    if (href) {
+        const rel = target === "_blank" ? " rel=\"noopener noreferrer\"" : "";
+        return `<a href="${escapeHtml(href)}"${attr("target", target)}${rel} ${common}>${escapeHtml(label)}</a>`;
+    }
+    return `<button type="button" ${common}>${escapeHtml(label)}</button>`;
+};
+
+export class LikoButton extends ElementBase {
     static get observedAttributes() {
         return ["primary", "size", "label", "background-color", "href", "target"];
     }
@@ -16,61 +48,15 @@ class LikoButton extends HTMLElement {
     }
 
     render() {
-        const primary = this.hasAttribute("primary");
-        const backgroundColor = this.getAttribute("background-color");
-        const size = this.getAttribute("size") || "medium";
-        const label = this.getAttribute("label");
-        const href = this.getAttribute("href");
-        const target = this.getAttribute("target");
-
-        const baseClasses = tw`inline-block cursor-pointer rounded-3xl border-0 leading-none font-bold no-underline`;
-
-        let sizeClasses;
-        switch (size) {
-            case "small":
-                sizeClasses = tw`px-4 py-2.5 text-xs`;
-                break;
-            case "large":
-                sizeClasses = tw`px-6 py-3 text-base`;
-                break;
-            default: // medium
-                sizeClasses = tw`px-5 py-[11px] text-sm`;
-        }
-
-        const modeClasses = primary ? tw`bg-foreground-80 text-white` : tw`bg-background-80 text-text`;
-
-        const hoverBg = primary ? "var(--color-foreground-100)" : "var(--color-background-60)";
-
-        this.innerHTML = "";
-
-        const element = href ? document.createElement("a") : document.createElement("button");
-
-        if (href) {
-            element.href = href;
-            if (target) {
-                element.target = target;
-                if (target === "_blank") {
-                    element.rel = "noopener noreferrer";
-                }
-            }
-        } else {
-            element.type = "button";
-        }
-
-        element.className = tw`${baseClasses} ${sizeClasses} ${modeClasses} slide-hover`;
-        element.style.setProperty("--slide-hover-bg", hoverBg);
-        if (backgroundColor) {
-            element.style.backgroundColor = backgroundColor;
-        }
-
-        element.textContent = label;
-
-        this.appendChild(element);
+        this.innerHTML = renderLikoButton({
+            primary: this.hasAttribute("primary"),
+            backgroundColor: this.getAttribute("background-color"),
+            size: this.getAttribute("size") || "medium",
+            label: this.getAttribute("label"),
+            href: this.getAttribute("href"),
+            target: this.getAttribute("target"),
+        });
     }
-}
-
-if (!customElements.get("liko-button")) {
-    customElements.define("liko-button", LikoButton);
 }
 
 export const LikoButtonExport = ({ primary, backgroundColor = null, size, label, onClick, href, target }) => {
@@ -86,3 +72,10 @@ export const LikoButtonExport = ({ primary, backgroundColor = null, size, label,
     }
     return btn;
 };
+
+/**
+ * Emits a <liko-button> custom-element tag from props (for composite components).
+ * Pure — safe to run on the server.
+ */
+export const likoButtonTag = ({ label, primary, size, backgroundColor, href, target, extra = "" }) =>
+    `<liko-button${attr("label", label)}${boolAttr("primary", primary)}${attr("size", size)}${attr("background-color", backgroundColor)}${attr("href", href)}${attr("target", target)}${extra}></liko-button>`;

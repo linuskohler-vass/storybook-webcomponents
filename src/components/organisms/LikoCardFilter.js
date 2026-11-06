@@ -1,8 +1,18 @@
 import { tw } from "../../utils/tw.js";
-import "../molecules/LikoFilterBar";
-import "../organisms/LikoCardGrid";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr } from "../../utils/html.js";
 
-class LikoCardFilter extends HTMLElement {
+/** Pure helper — derives the sorted, de-duplicated tag list from cards. */
+export const getLikoCardFilterTags = (cards = []) =>
+    [...new Set(cards.flatMap((card) => (card.tags || []).map((t) => t.label)))].sort();
+
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoCardFilter = ({ filterLabel }) =>
+    `<div><liko-filter-bar${attr("label", filterLabel)}></liko-filter-bar><liko-card-grid class="${tw`mt-6`}"></liko-card-grid></div>`;
+
+export class LikoCardFilter extends ElementBase {
     static get observedAttributes() {
         return ["filter-label"];
     }
@@ -27,31 +37,20 @@ class LikoCardFilter extends HTMLElement {
     }
 
     render() {
-        this.innerHTML = "";
+        this.innerHTML = renderLikoCardFilter({
+            filterLabel: this.getAttribute("filter-label"),
+        });
 
-        const allTags = [...new Set(this.cards.flatMap((card) => (card.tags || []).map((t) => t.label)))].sort();
-
-        const wrapper = document.createElement("div");
-
-        const filterLabel = this.getAttribute("filter-label");
-
-        const filterBar = document.createElement("liko-filter-bar");
-        if (filterLabel) filterBar.setAttribute("label", filterLabel);
-        filterBar.tags = allTags;
+        const filterBar = this.querySelector("liko-filter-bar");
+        filterBar.tags = getLikoCardFilterTags(this.cards);
         filterBar.activeTags = this._activeTags || [];
         filterBar.addEventListener("filter-change", (e) => {
             this._activeTags = e.detail.activeTags;
             this.updateGrid();
         });
-        wrapper.appendChild(filterBar);
 
-        const grid = document.createElement("liko-card-grid");
-        grid.className = tw`mt-6`;
-        grid.cards = this.getFilteredCards();
-        this._gridEl = grid;
-        wrapper.appendChild(grid);
-
-        this.appendChild(wrapper);
+        this._gridEl = this.querySelector("liko-card-grid");
+        this._gridEl.cards = this.getFilteredCards();
     }
 
     getFilteredCards() {
@@ -65,10 +64,6 @@ class LikoCardFilter extends HTMLElement {
             this._gridEl.cards = this.getFilteredCards();
         }
     }
-}
-
-if (!customElements.get("liko-card-filter")) {
-    customElements.define("liko-card-filter", LikoCardFilter);
 }
 
 export const LikoCardFilterExport = ({ filterLabel, cards = [] }) => {

@@ -1,8 +1,52 @@
 import { tw } from "../../utils/tw.js";
-import { LikoButtonExport } from "../atoms/LikoButton";
-import { LikoTagExport } from "../atoms/LikoTag";
+import { ElementBase } from "../../utils/element-base.js";
+import { attr, escapeHtml } from "../../utils/html.js";
+import { likoButtonTag } from "../atoms/LikoButton";
 
-class LikoCard extends HTMLElement {
+/**
+ * Pure render function — no browser globals, safe to run on the server.
+ */
+export const renderLikoCard = ({
+    heading,
+    text,
+    imageSrc,
+    imageAlt = "",
+    buttonLabel,
+    buttonUrl,
+    buttonTarget,
+    tags = [],
+}) => {
+    const img = imageSrc
+        ? `<img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" class="${tw`h-48 w-full object-cover`}">`
+        : "";
+
+    const tagsHtml =
+        tags.length > 0
+            ? `<div class="${tw`flex flex-wrap gap-2 px-5 pt-4`}">${tags
+                  .map((tag) => `<liko-tag${attr("label", tag.label)}></liko-tag>`)
+                  .join("")}</div>`
+            : "";
+
+    const headingHtml = heading ? `<h3>${escapeHtml(heading)}</h3>` : "";
+    const textHtml = text
+        ? `<p class="${tw`text-sm leading-relaxed text-foreground-60`}">${escapeHtml(text)}</p>`
+        : "";
+
+    const buttonHtml = buttonLabel
+        ? `<div class="${tw`mt-auto pt-4`}">${likoButtonTag({
+              label: buttonLabel,
+              size: "medium",
+              primary: true,
+              href: buttonUrl,
+              target: buttonTarget,
+              extra: " data-card-button",
+          })}</div>`
+        : "";
+
+    return `<div class="${tw`flex h-full flex-col overflow-hidden rounded-lg border border-border bg-background-100 shadow-sm`}">${img}${tagsHtml}<div class="${tw`flex grow flex-col p-5`}">${headingHtml}${textHtml}${buttonHtml}</div></div>`;
+};
+
+export class LikoCard extends ElementBase {
     static get observedAttributes() {
         return ["heading", "text", "image-src", "image-alt", "button-label", "button-url", "button-target"];
     }
@@ -27,76 +71,25 @@ class LikoCard extends HTMLElement {
     }
 
     render() {
-        const heading = this.getAttribute("heading");
-        const text = this.getAttribute("text");
-        const imageSrc = this.getAttribute("image-src");
-        const imageAlt = this.getAttribute("image-alt") || "";
-        const buttonLabel = this.getAttribute("button-label");
         const buttonUrl = this.getAttribute("button-url");
-        const buttonTarget = this.getAttribute("button-target");
 
-        this.innerHTML = "";
+        this.innerHTML = renderLikoCard({
+            heading: this.getAttribute("heading"),
+            text: this.getAttribute("text"),
+            imageSrc: this.getAttribute("image-src"),
+            imageAlt: this.getAttribute("image-alt") || "",
+            buttonLabel: this.getAttribute("button-label"),
+            buttonUrl,
+            buttonTarget: this.getAttribute("button-target"),
+            tags: this.tags,
+        });
 
-        const card = document.createElement("div");
-        card.className = tw`flex h-full flex-col overflow-hidden rounded-lg border border-border bg-background-100 shadow-sm`;
-
-        if (imageSrc) {
-            const img = document.createElement("img");
-            img.src = imageSrc;
-            img.alt = imageAlt;
-            img.className = tw`h-48 w-full object-cover`;
-            card.appendChild(img);
+        if (!buttonUrl) {
+            this.querySelector("[data-card-button]")?.addEventListener("click", () =>
+                this.dispatchEvent(new CustomEvent("button-click", { bubbles: true })),
+            );
         }
-
-        if (this.tags.length > 0) {
-            const tagsWrapper = document.createElement("div");
-            tagsWrapper.className = tw`flex flex-wrap gap-2 px-5 pt-4`;
-            for (const tag of this.tags) {
-                tagsWrapper.appendChild(LikoTagExport({ label: tag.label }));
-            }
-            card.appendChild(tagsWrapper);
-        }
-
-        const body = document.createElement("div");
-        body.className = tw`flex grow flex-col p-5`;
-
-        if (heading) {
-            const h3 = document.createElement("h3");
-            h3.textContent = heading;
-            body.appendChild(h3);
-        }
-
-        if (text) {
-            const p = document.createElement("p");
-            p.className = tw`text-sm leading-relaxed text-foreground-60`;
-            p.textContent = text;
-            body.appendChild(p);
-        }
-
-        if (buttonLabel) {
-            const buttonWrapper = document.createElement("div");
-            buttonWrapper.className = tw`mt-auto pt-4`;
-            const btn = LikoButtonExport({
-                label: buttonLabel,
-                size: "medium",
-                primary: true,
-                href: buttonUrl,
-                target: buttonTarget,
-                onClick: buttonUrl
-                    ? undefined
-                    : () => this.dispatchEvent(new CustomEvent("button-click", { bubbles: true })),
-            });
-            buttonWrapper.appendChild(btn);
-            body.appendChild(buttonWrapper);
-        }
-
-        card.appendChild(body);
-        this.appendChild(card);
     }
-}
-
-if (!customElements.get("liko-card")) {
-    customElements.define("liko-card", LikoCard);
 }
 
 export const LikoCardExport = ({
